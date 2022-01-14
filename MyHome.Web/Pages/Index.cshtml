@@ -1,0 +1,44 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="site-header">
+    <h1>Kostenverlauf</h1>
+    <a asp-page="Costs/Create" class="btn btn-success">Create New</a>
+</div>
+
+@if (Model.Cost == null || !Model.Cost.Any())
+{
+    <div class="text-center">
+        <p>Keine Kosten vorhanden!</p>
+    </div>
+}
+else
+{
+    <ol class="overview-list">
+
+        @foreach (int year in Model.Cost.Select(c => c.Year).Distinct())
+        {
+            <li>
+                <h3>Im Jahr @year</h3>
+            </li>
+
+            @foreach (var item in Model.Cost.Where(c => c.Year == year))
+            {
+                <li class="user-list-item">
+                    <span class="user-list-item-header">
+                        @Html.DisplayFor(modelItem => item.CostType.Name)
+                    </span>
+                    <span class="user-list-item-details">Kosten: @(item.Value)€</span>
+                    <div class="user-list-item-actions">
+                        @*<a asp-page="/Costs/Edit" asp-route-id="@item.Id">Edit</a> |*@
+                        <a asp-page="/Costs/Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-page="/Costs/Delete" asp-route-id="@item.Id">Delete</a>
+                    </div>
+                </li>
+            }
+        }
+    </ol>
+}
