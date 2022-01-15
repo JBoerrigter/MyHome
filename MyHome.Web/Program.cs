@@ -7,10 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("Sqlite");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
 builder.Services
+    .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString))
     .AddIdentity<IdentityUser, IdentityRole>(options => {
         options.Password.RequireDigit = false;
         options.Password.RequireUppercase = false;
@@ -28,13 +26,10 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+app.UseExceptionHandler("/Error");
+
+if (app.Environment.IsProduction())
 {
-    app.UseMigrationsEndPoint();
-}
-else
-{
-    app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 

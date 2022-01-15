@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+
+using MyHome.Web.Data;
 
 using System.ComponentModel.DataAnnotations;
 
@@ -15,11 +18,13 @@ namespace MyHome.Web.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly ApplicationDbContext _DbContext;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, ApplicationDbContext dbContext)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _DbContext = dbContext;
         }
 
         /// <summary>
@@ -78,8 +83,13 @@ namespace MyHome.Web.Areas.Identity.Pages.Account
             public bool RememberMe { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
+            if (!CheckDatabaseExists())
+            {
+                return Redirect("/Setup");
+            }
+
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
@@ -93,6 +103,13 @@ namespace MyHome.Web.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             ReturnUrl = returnUrl;
+
+            return Page();
+        }
+
+        private bool CheckDatabaseExists()
+        {
+            return !_DbContext.Database.GetPendingMigrations().Any();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)

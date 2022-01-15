@@ -1,25 +1,44 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+using MyHome.Web.Data;
 
 namespace MyHome.Web.Areas.Setup.Pages
 {
     public class IndexModel : PageModel
     {
         private readonly RoleManager<IdentityRole> _RoleManager;
+        private readonly ApplicationDbContext _DbContext;
 
-        public IndexModel(RoleManager<IdentityRole> roleManager)
+        public bool IsDatabaseCreated
+        {
+            get { return !_DbContext.Database.GetPendingMigrations().Any(); }
+        }
+
+        public IndexModel(RoleManager<IdentityRole> roleManager, ApplicationDbContext dbContext)
         {
             _RoleManager = roleManager;
+            _DbContext = dbContext;
         }
 
         public async Task<IActionResult> OnGet()
         {
-            if (await _RoleManager.RoleExistsAsync("Administrator"))
+            if (IsDatabaseCreated)
             {
-                return BadRequest("Setup has already been completed");
+                if (await _RoleManager.RoleExistsAsync("Administrator"))
+                {
+                    return BadRequest("Setup has already been completed");
+                }
             }
 
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetCreateDatabaseAsync()
+        {
+            await _DbContext.Database.MigrateAsync(CancellationToken.None);
             return Page();
         }
     }

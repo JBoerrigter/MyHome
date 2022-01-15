@@ -116,6 +116,13 @@ namespace MyHome.Web.Areas.Identity.Pages.Account
                 {
                     _Logger.LogInformation("User created a new account with password.");
 
+                    var roleResult = await _UserManager.AddToRoleAsync(user, "Standard");
+
+                    if (roleResult.Succeeded)
+                    {
+                        _Logger.LogInformation("Assigned the 'Standard' role to the user.");
+                    }
+
                     var userId = await _UserManager.GetUserIdAsync(user);
                     var code = await _UserManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
