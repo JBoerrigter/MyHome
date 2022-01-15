@@ -47,7 +47,7 @@ namespace MyHome.Pages.Costs
         public string Description { get; set; }
 
         public IFormFile Image { get; set; }
-        
+
         public CreateModel(ApplicationDbContext context)
         {
             _context = context;
@@ -95,12 +95,6 @@ namespace MyHome.Pages.Costs
                 return Unauthorized();
             }
 
-            byte[] buffer = new byte[Image.Length];
-            using (var stream = new MemoryStream(buffer))
-            {
-                await Image.CopyToAsync(stream);
-            }
-
             var cost = new Cost
             {
                 Year = Year,
@@ -109,8 +103,17 @@ namespace MyHome.Pages.Costs
                 UserId = userId.Value,
                 Created = DateTime.Now,
                 Description = Description,
-                Image = buffer
             };
+
+            if (Image is not null)
+            {
+                byte[] buffer = new byte[Image.Length];
+                using (var stream = new MemoryStream(buffer))
+                {
+                    await Image.CopyToAsync(stream);
+                }
+                cost.Image = buffer;
+            }
 
             _context.Costs.Add(cost);
             await _context.SaveChangesAsync();

@@ -36,8 +36,11 @@ namespace MyHome.Pages.Costs
                 return NotFound();
             }
 
-            string base64String = Convert.ToBase64String(Cost.Image, 0, Cost.Image.Length);
-            Base64Image = "data:image/jpg;base64," + base64String;
+            if (Cost.Image is not null)
+            {
+                string base64String = Convert.ToBase64String(Cost.Image, 0, Cost.Image.Length);
+                Base64Image = "data:image/jpg;base64," + base64String;
+            }
 
             return Page();
         }

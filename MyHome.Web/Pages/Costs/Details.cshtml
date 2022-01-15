@@ -21,14 +21,20 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Cost.Value)
         </dd>
-        <dt class="col-sm-2">Bemerkung</dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Cost.Description)
-        </dd>
-        <dt class="col-sm-2">Image</dt>
-        <dd class="col-sm-10 col-md-6 col-lg-4">
-            <img class="img-thumbnail" src="@Model.Base64Image" />
-        </dd>
+        @if (!string.IsNullOrEmpty(Model.Cost.Description))
+        {
+            <dt class="col-sm-2">Bemerkung</dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Cost.Description)
+            </dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.Base64Image))
+        {
+            <dt class="col-sm-2">Image</dt>
+            <dd class="col-sm-10 col-md-6 col-lg-4">
+                <img class="img-thumbnail" src="@Model.Base64Image" />
+            </dd>
+        }
     </dl>
 </div>
 <div>
