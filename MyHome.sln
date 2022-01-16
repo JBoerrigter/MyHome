@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHome.Web", "MyHome.Web\MyHome.Web.csproj", "{E531EB95-F8F9-4CDF-B5D9-EE93D59D5253}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHome.Web", "MyHome.Web\MyHome.Web.csproj", "{E531EB95-F8F9-4CDF-B5D9-EE93D59D5253}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{26678DAC-80E5-478B-9210-2320F630B682}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
