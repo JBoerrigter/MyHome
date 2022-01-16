@@ -1,20 +1,20 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 /* Custom */
@@ -30,6 +30,59 @@ body {
         align-self: center;
     }
 
+/* Dashboard */
+.personal-overview {
+    margin-top: 1rem;
+}
+
+.cards {
+    display: grid;
+    gap: 1rem;
+}
+
+@media only screen and (min-width: 768px) {
+    .cards {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .cards {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+.card {
+    color: black;
+    text-decoration: none;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.25);
+    
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+    .card:hover {
+        color: black;
+        box-shadow: 0px 0px 15px 5px #17551030;
+    }
+
+.card-image {
+    width: 80%;
+    height: 80%;
+    margin: auto;
+}
+
+.card-description {
+    margin: 0;
+}
+
+.card-alert {
+    color: red;
+}
+
+/* General overview */
 ol.overview-list {
     list-style-type: none;
     padding: 0;

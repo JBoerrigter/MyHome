@@ -8,6 +8,9 @@ namespace MyHome.Web.Data
         public DbSet<Cost> Costs { get; set; }
         public DbSet<CostType> CostTypes { get; set; }
 
+        public DbSet<MeterReading> MetersReadings { get; set; }
+        public DbSet<MeterReadingType> MetersReadingTypes { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
     }
 }

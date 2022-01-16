@@ -1,6 +1,3 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -9,19 +6,17 @@ using MyHome.Web.Data;
 
 using System.Security.Claims;
 
-namespace MyHome
+namespace MyHome.Web.Pages.Costs
 {
-    [Authorize]
     public class IndexModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _DbContext;
 
-        public int MeterReadingsConut = 0;
-        public int CostsCount = 0;
-        
-        public IndexModel(ApplicationDbContext context)
+        public IEnumerable<Cost>? CostList { get; set; }
+
+        public IndexModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _DbContext = dbContext;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -33,13 +28,9 @@ namespace MyHome
                 return Unauthorized();
             }
 
-            MeterReadingsConut = await _context.MetersReadings
-                .Where(r => r.UserId == userId.Value)
-                .CountAsync();
-
-            CostsCount = await _context.Costs
+            CostList = await _DbContext.Costs
                 .Where(c => c.UserId == userId.Value)
-                .CountAsync();
+                .ToListAsync();
 
             return Page();
         }

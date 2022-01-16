@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyHome.Web.Data;
 
@@ -10,9 +11,10 @@ using MyHome.Web.Data;
 namespace MyHome.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220115160058_AddMeterReadings")]
+    partial class AddMeterReadings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
@@ -271,9 +273,11 @@ namespace MyHome.Web.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<byte[]>("Image")
+                        .IsRequired()
                         .HasColumnType("BLOB");
 
                     b.Property<int>("ReadingTypeId")
@@ -305,10 +309,6 @@ namespace MyHome.Web.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Unit")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

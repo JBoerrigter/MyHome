@@ -1,6 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿#nullable disable
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -9,16 +7,14 @@ using MyHome.Web.Data;
 
 using System.Security.Claims;
 
-namespace MyHome
+namespace MyHome.Web.Pages.MeterReadings
 {
-    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-
-        public int MeterReadingsConut = 0;
-        public int CostsCount = 0;
         
+        public IList<MeterReading> MeterReadingList { get; set; }
+
         public IndexModel(ApplicationDbContext context)
         {
             _context = context;
@@ -33,13 +29,11 @@ namespace MyHome
                 return Unauthorized();
             }
 
-            MeterReadingsConut = await _context.MetersReadings
-                .Where(r => r.UserId == userId.Value)
-                .CountAsync();
-
-            CostsCount = await _context.Costs
-                .Where(c => c.UserId == userId.Value)
-                .CountAsync();
+            MeterReadingList = await _context.MetersReadings
+                .Where(m => m.UserId == userId.Value)
+                .Include(m => m.ReadingType)
+                .Include(m => m.User)
+                .ToListAsync();
 
             return Page();
         }
