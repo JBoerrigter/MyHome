@@ -38,8 +38,25 @@ namespace MyHome.Web.Areas.Setup.Pages
 
         public async Task<IActionResult> OnGetCreateDatabaseAsync()
         {
+            EnsureDataPathExists();
             await _DbContext.Database.MigrateAsync(CancellationToken.None);
             return Page();
+        }
+
+        /// <summary>
+        /// Todo: more generic
+        /// </summary>
+        /// <remarks>
+        /// just a workaround for the time beeing 
+        /// </remarks>
+        private static void EnsureDataPathExists()
+        {
+            DirectoryInfo directory = new("data");
+         
+            if (!directory.Exists)
+            {
+                directory.Create();
+            }
         }
     }
 }
