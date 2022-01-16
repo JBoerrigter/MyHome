@@ -12,14 +12,17 @@ namespace MyHome.Web.Pages.MeterReadings
 {
     public class DetailsModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DetailsModel(MyHome.Web.Data.ApplicationDbContext context)
+        public DetailsModel(ApplicationDbContext context)
         {
             _context = context;
         }
 
         public MeterReading MeterReading { get; set; }
+
+        public string Base64Image { get; set; }
+
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -36,6 +39,13 @@ namespace MyHome.Web.Pages.MeterReadings
             {
                 return NotFound();
             }
+
+            if (MeterReading.Image is not null)
+            {
+                string base64String = Convert.ToBase64String(MeterReading.Image, 0, MeterReading.Image.Length);
+                Base64Image = "data:image/jpg;base64," + base64String;
+            }
+
             return Page();
         }
     }

@@ -35,9 +35,9 @@ else
                     </span>
                     <span class="user-list-item-details">Kosten: @item.Value @item.ReadingType.Unit</span>
                     <div class="user-list-item-actions">
-                        <a asp-page="/Costs/Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-page="/Costs/Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-page="/Costs/Delete" asp-route-id="@item.Id">Delete</a>
+                        @*<a asp-page="/MeterReadings/Edit" asp-route-id="@item.Id">Edit</a> |*@
+                        <a asp-page="/MeterReadings/Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-page="/MeterReadings/Delete" asp-route-id="@item.Id">Delete</a>
                     </div>
                 </li>
             }
