@@ -2,17 +2,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
+using MyHome.Web.Data;
+
 using System.ComponentModel.DataAnnotations;
 
 namespace MyHome.Web.Areas.Setup.Pages
 {
     public class CreateAdminAccountModel : PageModel
     {
-        private readonly IUserStore<IdentityUser> _UserStore;
-        private readonly IUserEmailStore<IdentityUser> _EmailStore;
-        private readonly UserManager<IdentityUser> _UserManager;
+        private readonly IUserStore<ApplicationUser> _UserStore;
+        private readonly IUserEmailStore<ApplicationUser> _EmailStore;
+        private readonly UserManager<ApplicationUser> _UserManager;
         private readonly RoleManager<IdentityRole> _RoleManager;
-        private readonly SignInManager<IdentityUser> _SignInManager;
+        private readonly SignInManager<ApplicationUser> _SignInManager;
 
         /// <summary>
         /// Data bound to the UI
@@ -39,10 +41,10 @@ namespace MyHome.Web.Areas.Setup.Pages
         }
 
         public CreateAdminAccountModel(
-            IUserStore<IdentityUser> userStore,
-            UserManager<IdentityUser> userManager,
+            IUserStore<ApplicationUser> userStore,
+            UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<ApplicationUser> signInManager)
         {
             _UserStore = userStore;
             _UserManager = userManager;
@@ -51,7 +53,7 @@ namespace MyHome.Web.Areas.Setup.Pages
 
             if (_UserManager.SupportsUserEmail)
             {
-                _EmailStore = (IUserEmailStore<IdentityUser>)_UserStore;
+                _EmailStore = (IUserEmailStore<ApplicationUser>)_UserStore;
             }
         }
 
@@ -62,7 +64,7 @@ namespace MyHome.Web.Areas.Setup.Pages
                 return Page();
             }
 
-            var user = new IdentityUser(Input.Email);
+            var user = new ApplicationUser(Input.Email);
             await _UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
 
             if (_EmailStore is not null)

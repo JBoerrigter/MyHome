@@ -1,0 +1,12 @@
+﻿@if (User.IsInRole("Administrator"))
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Admin" asp-page="/MeterReadingTypes/Index">Zählerarten</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Admin" asp-page="/IncomeTypes/Index">Einkommentypen</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Admin" asp-page="/ExpenseTypes/Index">Kostentypen</a>
+    </li>
+}

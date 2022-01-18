@@ -9,7 +9,7 @@ var connectionString = builder.Configuration.GetConnectionString("Sqlite");
 
 builder.Services
     .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString))
-    .AddIdentity<IdentityUser, IdentityRole>(options => {
+    .AddIdentity<ApplicationUser, IdentityRole>(options => {
         options.Password.RequireDigit = false;
         options.Password.RequireUppercase = false;
         options.Password.RequireLowercase = false;

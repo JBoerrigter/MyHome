@@ -15,7 +15,7 @@ namespace MyHome.Web.Data
         public MeterReadingType? ReadingType { get; set; }
 
         public string UserId { get; set; }
-        public IdentityUser? User { get; set; }
+        public ApplicationUser? User { get; set; }
 
     }
 }

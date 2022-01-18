@@ -37,7 +37,7 @@ namespace MyHome
                 .Where(r => r.UserId == userId.Value)
                 .CountAsync();
 
-            CostsCount = await _context.Costs
+            CostsCount = await _context.Expenses
                 .Where(c => c.UserId == userId.Value)
                 .CountAsync();
 
