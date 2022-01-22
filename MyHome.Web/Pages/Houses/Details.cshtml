@@ -1,0 +1,41 @@
+﻿@page
+@model DetailsModel
+@{
+    ViewData["Title"] = "Housedetails";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Haus</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ViewModel.Street)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ViewModel.Street)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ViewModel.Number)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ViewModel.Number)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ViewModel.PostalCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ViewModel.PostalCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ViewModel.City)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ViewModel.City)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="/Index">Back</a>
+</div>

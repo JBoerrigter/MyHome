@@ -14,14 +14,14 @@ namespace MyHome
     [Authorize]
     public class IndexModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _Context;
 
-        public int MeterReadingsConut = 0;
-        public int CostsCount = 0;
-        
+        public string? Username { get; set; }
+        public Family? Family { get; private set; }
+
         public IndexModel(ApplicationDbContext context)
         {
-            _context = context;
+            _Context = context;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -30,16 +30,16 @@ namespace MyHome
 
             if (userId is null)
             {
-                return Unauthorized();
+                return Redirect("/Account/Login");
             }
 
-            MeterReadingsConut = await _context.MetersReadings
-                .Where(r => r.UserId == userId.Value)
-                .CountAsync();
+            var user = await _Context.Users
+                .Include(u => u.Family)
+                .Include(u => u.Family.Houses)
+                .FirstOrDefaultAsync(u => u.Id == userId.Value);
 
-            CostsCount = await _context.Expenses
-                .Where(c => c.UserId == userId.Value)
-                .CountAsync();
+            Username = user?.UserName;
+            Family = user?.Family;
 
             return Page();
         }

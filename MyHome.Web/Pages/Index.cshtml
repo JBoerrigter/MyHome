@@ -1,32 +1,101 @@
 ﻿@page
 @model IndexModel
+@using System.Security.Claims
 @{
     ViewData["Title"] = "Dashboard";
 }
 
 <div class="site-header">
-    <h1>@ViewData["Title"]</h1>
+    <h1>Hello @Model.Username</h1>
 </div>
 
-<section class="personal-overview cards">
-    <a class="card" asp-page="/MeterReadings/Index">
-        <img src="~/img/dashboard-level.svg" class="card-image" alt="meter reading icon" />
-        <div class="card-content">
-            <h3 class="card-title">Zählerstände</h3>
-            <p class="card-description">Anzahl: @Model.MeterReadingsConut</p>
-            @*
-                TODO: New Feature - Recognize if a value for the current year is missing
-                <p class="card-alert">Bitte tragen Sie das aktuelle Jahr ein!</p>*@
+@if (Model.Family is null)
+{
+    <section>
+
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">You don't have a family yet.</h4>
+            <p>Do you want to create a family?</p>
+            <a asp-page="Families/Create" class="btn btn-success">Create Family</a>
         </div>
+
+        <div class="alert alert-warning" role="alert">
+            <p>You can also join a family with an personal invite code:</p>
+            <input type="text" class="form-control" placeholder="Invitecode" />
+            <input type="button" class="btn btn-primary mt-2" value="Join Family" />
+        </div>
+
+    </section>
+}
+else
+{
+    <div class="d-flex justify-content-between">
+
+        <h4>Familie: @Model.Family.Name</h4>
+        <a asp-page="/Houses/Create" class="btn btn-success">Add House</a>
+    </div>
+
+    <section class="houses">
+        <h2>Häuser</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Straße</td>
+                    <td>Nr</td>
+                    <td>Plz</td>
+                    <td>Ort</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Family.Houses is null || !Model.Family.Houses.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center">Sie haben keine Häuser</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (House house in Model.Family.Houses)
+                    {
+                        <tr>
+                            <td>@house.Street</td>
+                            <td>@house.Number</td>
+                            <td>@house.PostalCode</td>
+                            <td>@house.City</td>
+                            <td><a asp-page="/Houses/Details" asp-route-id="@house.Id" class="btn btn-primary">></a></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </section>
+}
+
+@*
+    TODO: New Feature - Recognize if a value for the current year is missing
+    <p class="card-alert">Bitte tragen Sie das aktuelle Jahr ein!</p>
+*@
+
+@*
+    <section class="personal-overview cards">
+    <a class="card" asp-page="/MeterReadings/Index">
+    <img src="~/img/dashboard-level.svg" class="card-image" alt="meter reading icon" />
+    <div class="card-content">
+    <h3 class="card-title">Zählerstände</h3>
+    <p class="card-description">Anzahl: @Model.MeterReadingsConut</p>
+    </div>
     </a>
     <a class="card" asp-page="/Costs/Index">
-        <img src="~/img/handout.svg" class="card-image" alt="cost icon" />
-        <div class="card-content">
-            <h3 class="card-title">Kosten</h3>
-            <p class="card-description">Anzahl: @Model.CostsCount</p>
-        </div>
+    <img src="~/img/handout.svg" class="card-image" alt="cost icon" />
+    <div class="card-content">
+    <h3 class="card-title">Kosten</h3>
+    <p class="card-description">Anzahl: @Model.CostsCount</p>
+    </div>
     </a>
-</section>
+    </section>
+
+*@
 
 @*
     @if (Model.Cost == null || !Model.Cost.Any())
@@ -61,4 +130,5 @@
     }
     }
     </ol>
-    }*@
+    }
+*@
