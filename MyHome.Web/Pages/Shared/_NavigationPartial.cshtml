@@ -1,0 +1,21 @@
+﻿@inject SignInManager<ApplicationUser> SignInManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <ul class="menu-links">
+        <li class="nav-link">
+            <a href="/">
+                <i class='bx bxs-dashboard icon'></i>
+                <span class="text nav-text">Dashboard</span>
+            </a>
+        </li>
+
+        <li class="nav-link">
+            <a href="/Houses">
+                <i class='bx bx-home icon'></i>
+                <span class="text nav-text">Häuser</span>
+            </a>
+        </li>
+
+    </ul>
+}

@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyHome - @ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" / >
+    <link rel="stylesheet" href="~/MyHome.Web.styles.css" asp-append-version="true" />
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    @RenderSection("Styles", required: false)
+</head>
+
+<body>
+    <nav class="sidebar close">
+        <header>
+            <div class="image-text">
+                <span class="image">
+                    <img src="~/img/home-52.svg" alt="">
+                </span>
+
+                <div class="text logo-text">
+                    <span class="name">MyHome</span>
+                    <span class="profession"></span>
+                </div>
+            </div>
+
+            <i class='bx bx-chevron-right toggle'></i>
+        </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+
+                <li class="search-box">
+                    <i class='bx bx-search icon'></i>
+                    <input type="text" placeholder="Search...">
+                </li>
+
+                <partial name="_NavigationPartial" />
+            </div>
+
+            <div class="bottom-content">
+                <partial name="_LoginPartial" />
+
+                <li class="mode">
+                    <div class="sun-moon">
+                        <i class='bx bx-moon icon moon'></i>
+                        <i class='bx bx-sun icon sun'></i>
+                    </div>
+                    <span class="mode-text text">Dark mode</span>
+
+                    <div class="toggle-switch">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+
+            </div>
+        </div>
+
+    </nav>
+
+    <main role="main" class="content">
+        @RenderBody()
+    </main>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="./js/sidebar.js" asp-append-version="true"></script>
+
+    <script>
+
+    document.addEventListener("DOMContentLoaded", function(){
+        var btnLogout = document.getElementById("btn-logout");
+        console.log(btnLogout);
+        btnLogout.addEventListener("click", function(){
+
+            if (confirm("Do you really want to logout?"))
+            {
+                var request = new XMLHttpRequest();
+                request.open("POST", "/Account/Logout?ReturnUrl=/");
+                request.send();
+            }
+
+        });
+    });
+
+</script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+
+</html>
