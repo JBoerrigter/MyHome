@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyHome - @ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" / >
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MyHome.Web.styles.css" asp-append-version="true" />
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     @RenderSection("Styles", required: false)
@@ -62,7 +62,19 @@
     </nav>
 
     <main role="main" class="content">
-        @RenderBody()
+        <partial name="_PageIndicatorPartial" />
+
+        <div class="main-container">
+            <div class="main-header">
+                <h1>@ViewData["Title"]</h1>
+                <div class="main-actions">
+                    @RenderSection("PageActions", required: false)
+                </div>
+            </div>
+            <div class="main-content">
+                @RenderBody()
+            </div>
+        </div>
     </main>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -72,22 +84,22 @@
 
     <script>
 
-    document.addEventListener("DOMContentLoaded", function(){
-        var btnLogout = document.getElementById("btn-logout");
-        console.log(btnLogout);
-        btnLogout.addEventListener("click", function(){
+        document.addEventListener("DOMContentLoaded", function(){
+            var btnLogout = document.getElementById("btn-logout");
+            console.log(btnLogout);
+            btnLogout.addEventListener("click", function(){
 
-            if (confirm("Do you really want to logout?"))
-            {
-                var request = new XMLHttpRequest();
-                request.open("POST", "/Account/Logout?ReturnUrl=/");
-                request.send();
-            }
+                if (confirm("Do you really want to logout?"))
+                {
+                    var request = new XMLHttpRequest();
+                    request.open("POST", "/Account/Logout?ReturnUrl=/");
+                    request.send();
+                }
 
+            });
         });
-    });
 
-</script>
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 

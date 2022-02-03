@@ -18,7 +18,7 @@ h1, h2, h3, h4, h5, h6, p, a, span {
 
 :root {
     /* ===== Colors ===== */
-    --body-color: #E4E9F7;
+    --body-color: #F5F5F5;
     --sidebar-color: #FFF;
     --primary-color: #695CFE;
     --primary-color-light: #F6F5FF;
@@ -346,7 +346,8 @@ body.dark .switch::before {
     width: calc(100% - 250px);
     background-color: var(--body-color);
     transition: var(--tran-05);
-    padding-left: 2.5rem
+    padding-left: 2.5rem;
+    padding-right: 2.5rem
 }
 
 .sidebar.close ~ .content {
@@ -432,4 +433,73 @@ ol.overview-list {
 
 .user-list-item-details {
     display: block;
+}
+
+#setup-page {
+    width: 100%;
+    margin: auto;
+    max-width: 800px
+}
+
+#setup-actions {
+    display: flex;
+}
+
+    #setup-actions section:first-child {
+        margin-right: 1rem;
+    }
+
+    #setup-actions section:last-child {
+        margin-left: 1rem;
+    }
+
+#registerForm {
+    width: 100%;
+    max-width: 450px;
+    margin: auto;
+}
+
+.page-indicator {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.main-container {
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    color: var(--toggle-color);
+    background-color: var(--primary-color);
+}
+
+.main-header h1 {
+    font-size: 22pt;
+    padding: 1rem;
+}
+
+.main-actions {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.main-actions a {
+    margin: 0 .5rem;
+}
+
+.main-content {
+    padding: 1rem;
+}
+
+.breadcrumb-link {
+    color: var(--text-color);
+}
+
+.breadcrumb-link:hover {
+    color: var(--primary-color);
 }

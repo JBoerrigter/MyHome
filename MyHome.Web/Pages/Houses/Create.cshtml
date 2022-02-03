@@ -4,10 +4,6 @@
     ViewData["Title"] = "Add a new House";
 }
 
-<div class="site-header">
-    <h1>@ViewData["Title"]</h1>
-</div>
-
 <form method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
@@ -30,9 +26,9 @@
         <input type="text" asp-for="Input.City" class="form-control" />
         <span asp-validation-for="Input.City" class="text-danger"></span>
     </div>
-    <input type="submit" class="btn btn-success mt-3" value="Create" />
-</form>
 
-<div>
-    <a asp-page="/Index">Back</a>
-</div>
+    <div class="mt-3">
+        <input type="submit" class="btn btn-success" value="Create" /> |
+        <a asp-page="/Index">Back</a>
+    </div>
+</form>
