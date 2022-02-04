@@ -350,6 +350,6 @@ MigrationBackup/
 .ionide/
 
 # Exclude Databases
-.data/*.db
-.data/*.db-shm
-.data/*.db-wal
+/MyHome.Web/Data/*.db
+/MyHome.Web/Data/*.db-shm
+/MyHome.Web/Data/*.db-wal
