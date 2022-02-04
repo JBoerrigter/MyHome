@@ -1,13 +1,10 @@
 ﻿@page
 @model DetailsModel
 @{
-    ViewData["Title"] = "Housedetails";
+    ViewData["Title"] = $"House - {Model.ViewModel.Street} {Model.ViewModel.Number}";
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>Haus</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
