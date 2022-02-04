@@ -80,26 +80,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="./js/sidebar.js" asp-append-version="true"></script>
-
-    <script>
-
-        document.addEventListener("DOMContentLoaded", function(){
-            var btnLogout = document.getElementById("btn-logout");
-            console.log(btnLogout);
-            btnLogout.addEventListener("click", function(){
-
-                if (confirm("Do you really want to logout?"))
-                {
-                    var request = new XMLHttpRequest();
-                    request.open("POST", "/Account/Logout?ReturnUrl=/");
-                    request.send();
-                }
-
-            });
-        });
-
-    </script>
+    <script src="~/js/sidebar.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 
