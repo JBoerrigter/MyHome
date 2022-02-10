@@ -11,5 +11,7 @@
         
         public int FamilyId { get; set; }
         public Family? Family { get; set; }
+
+        public List<MeterReading> MeterReadings { get; set; }
     }
 }

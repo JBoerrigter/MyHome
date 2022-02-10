@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 using MyHome.Web.Data;
 
@@ -24,6 +25,8 @@ namespace MyHome.Web.Pages.Houses
 
             [DisplayName("Stadt")]
             public string City { get; set; }
+
+            public List<MeterReading> MeterReadings { get; set; }
         }
 
         private readonly ApplicationDbContext _DbContext;
@@ -56,7 +59,9 @@ namespace MyHome.Web.Pages.Houses
                 return NotFound("Die Anmeldung ist ungültig!");
             }
 
-            var house = await _DbContext.Houses.FindAsync(id);
+            var house = await _DbContext.Houses
+                .Include(h => h.MeterReadings)
+                .FirstOrDefaultAsync(h => h.Id == id);
 
             if (house == null)
             {
@@ -74,6 +79,7 @@ namespace MyHome.Web.Pages.Houses
                 City = house.City,
                 Number = house.Number,
                 PostalCode = house.PostalCode,
+                MeterReadings = house.MeterReadings
             };
 
             return Page();

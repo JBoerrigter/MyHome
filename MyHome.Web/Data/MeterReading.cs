@@ -17,5 +17,8 @@ namespace MyHome.Web.Data
         public string UserId { get; set; }
         public ApplicationUser? User { get; set; }
 
+        public int HouseId { get; set; }
+        public House House { get; set; }
+
     }
 }

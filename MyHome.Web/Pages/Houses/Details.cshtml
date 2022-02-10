@@ -1,11 +1,10 @@
 ﻿@page
 @model DetailsModel
 @{
-    ViewData["Title"] = $"House - {Model.ViewModel.Street} {Model.ViewModel.Number}";
+    ViewData["Title"] = $"Housedetails";
 }
 
 <div>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ViewModel.Street)
@@ -33,6 +32,30 @@
         </dd>
     </dl>
 </div>
+
+@if (Model.ViewModel.MeterReadings != null)
+{
+    <hr />
+    <div class="meterreadings-container">
+        <h3>Meter Readings</h3>
+        <ul class="list-group">
+            @if (Model.ViewModel.MeterReadings.Any())
+            {
+                foreach (var reading in Model.ViewModel.MeterReadings)
+                {
+                    <li class="list-group-item list-group-item-action">
+                        @reading.ReadingType
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="list-group-item">No Meterreadings recorded</li>
+            }
+        </ul>
+    </div>
+}
+
 <div>
     <a asp-page="/Index">Back</a>
 </div>
