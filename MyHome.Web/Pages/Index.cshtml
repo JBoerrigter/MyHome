@@ -40,46 +40,46 @@
 else
 {
     <section class="houses">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Straße</th>
-                    <th scope="col">Nr</th>
-                    <th scope="col">Plz</th>
-                    <th scope="col">Ort</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.Family.Houses is null || !Model.Family.Houses.Any())
-                {
-                    <tr>
-                        <td colspan="6" class="text-center">Sie haben keine Häuser</td>
-                    </tr>
-                }
-                else
-                {
-                    foreach (House house in Model.Family.Houses)
-                    {
-                        <tr>
-                            <td>@house.Street</td>
-                            <td>@house.Number</td>
-                            <td>@house.PostalCode</td>
-                            <td>@house.City</td>
-                            <td>
-                                <div class="d-flex">
-                                    <a asp-page="/Houses/Details" asp-route-id="@house.Id" class="mx-1" style="font-size: 16pt;">
-                                        <i class='bx bx-pencil'></i>
+        <div class="list-group">
+            @for (int i = 0; i < Model.Family.Houses.Count; i++)
+            {
+                <div class="list-group-item list-group-item-action">
+
+                    <div class="house-container">
+
+                        <a asp-page="Houses/Details" asp-route-id="@(Model.Family.Houses[i].Id)" class="house-info">
+                            <div class="house-street">
+                                <span>@Model.Family.Houses[i].Street</span>
+                                <span>@Model.Family.Houses[i].Number</span>
+                            </div>
+                            <div class="house-city">
+                                <span>@Model.Family.Houses[i].PostalCode</span>
+                                <span>@Model.Family.Houses[i].City</span>
+                            </div>
+                        </a>
+
+                        <div class="dropdown house-action">
+                            <span id="actions@(i)" data-bs-toggle="dropdown" aria-expanded="false" class="house-action-toggle">
+                                <i class='bx bx-dots-vertical-rounded'></i>
+                            </span>
+                            <ul class="dropdown-menu" aria-labelledby="actions@(i)">
+                                <li>
+                                    <a class="dropdown-item">
+                                        <i class='bx bx-spreadsheet'></i>
+                                        <span>Export</span>
                                     </a>
-                                    <a asp-page="/Houses/Delete" asp-route-id="@house.Id" class="mx-1" style="font-size: 16pt;">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-page="/Houses/Delete" asp-route-id="@Model.Family.Houses[i].Id">
                                         <i class='bx bx-trash'></i>
+                                        <span>Delete</span>
                                     </a>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                }
-            </tbody>
-        </table>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </section>
 }
