@@ -1,13 +1,6 @@
 ﻿@page
 @model IndexModel
 @using System.Security.Claims
-@section PageActions
-{
-    @if (Model.Family is not null)
-    {
-<a asp-page="/Houses/Create" class="btn btn-success">Add House</a>
-    }
-}
 @{
     @if (Model.Family is null)
     {
@@ -19,67 +12,80 @@
     }
 }
 
-@if (Model.Family is null)
-{
-    <section>
-
-        <div class="alert alert-info" role="alert">
-            <h4 class="alert-heading">You don't have a family yet.</h4>
-            <p>Do you want to create a family?</p>
-            <a asp-page="Families/Create" class="btn btn-success">Create Family</a>
-        </div>
-
-        <div class="alert alert-warning" role="alert">
-            <p>You can also join a family with an personal invite code:</p>
-            <input type="text" class="form-control" placeholder="Invitecode" />
-            <input type="button" class="btn btn-primary mt-2" value="Join Family" />
-        </div>
-
-    </section>
-}
-else
-{
-    <section class="houses">
-        <div class="list-group">
-            @for (int i = 0; i < Model.Family.Houses.Count; i++)
+<div class="main-container">
+    <div class="main-header">
+        <h1>@ViewData["Title"]</h1>
+        <div class="main-actions">
+            @if (Model.Family is not null)
             {
-                <div class="list-group-item list-group-item-action">
-
-                    <div class="house-container">
-
-                        <a asp-page="Houses/Details" asp-route-id="@(Model.Family.Houses[i].Id)" class="house-info">
-                            <div class="house-street">
-                                <span>@Model.Family.Houses[i].Street</span>
-                                <span>@Model.Family.Houses[i].Number</span>
-                            </div>
-                            <div class="house-city">
-                                <span>@Model.Family.Houses[i].PostalCode</span>
-                                <span>@Model.Family.Houses[i].City</span>
-                            </div>
-                        </a>
-
-                        <div class="dropdown house-action">
-                            <span id="actions@(i)" data-bs-toggle="dropdown" aria-expanded="false" class="house-action-toggle">
-                                <i class='bx bx-dots-vertical-rounded'></i>
-                            </span>
-                            <ul class="dropdown-menu" aria-labelledby="actions@(i)">
-                                <li>
-                                    <a class="dropdown-item">
-                                        <i class='bx bx-spreadsheet'></i>
-                                        <span>Export</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-page="/Houses/Delete" asp-route-id="@Model.Family.Houses[i].Id">
-                                        <i class='bx bx-trash'></i>
-                                        <span>Delete</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                <a asp-page="/Houses/Create" class="btn btn-success">Add House</a>
             }
         </div>
-    </section>
-}
+    </div>
+    <div class="main-content">
+        @if (Model.Family is null)
+        {
+            <section>
+
+                <div class="alert alert-info" role="alert">
+                    <h4 class="alert-heading">You don't have a family yet.</h4>
+                    <p>Do you want to create a family?</p>
+                    <a asp-page="Families/Create" class="btn btn-success">Create Family</a>
+                </div>
+
+                <div class="alert alert-warning" role="alert">
+                    <p>You can also join a family with an personal invite code:</p>
+                    <input type="text" class="form-control" placeholder="Invitecode" />
+                    <input type="button" class="btn btn-primary mt-2" value="Join Family" />
+                </div>
+
+            </section>
+        }
+        else
+        {
+            <section class="houses">
+                <div class="list-group">
+                    @for (int i = 0; i < Model.Family.Houses.Count; i++)
+                    {
+                        <div class="list-group-item list-group-item-action">
+
+                            <div class="house-container">
+
+                                <a asp-page="Houses/Details" asp-route-id="@(Model.Family.Houses[i].Id)" class="house-info">
+                                    <div class="house-street">
+                                        <span>@Model.Family.Houses[i].Street</span>
+                                        <span>@Model.Family.Houses[i].Number</span>
+                                    </div>
+                                    <div class="house-city">
+                                        <span>@Model.Family.Houses[i].PostalCode</span>
+                                        <span>@Model.Family.Houses[i].City</span>
+                                    </div>
+                                </a>
+
+                                <div class="dropdown house-action">
+                                    <span id="actions@(i)" data-bs-toggle="dropdown" aria-expanded="false" class="house-action-toggle">
+                                        <i class='bx bx-dots-vertical-rounded'></i>
+                                    </span>
+                                    <ul class="dropdown-menu" aria-labelledby="actions@(i)">
+                                        <li>
+                                            <a class="dropdown-item">
+                                                <i class='bx bx-spreadsheet'></i>
+                                                <span>Export</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" asp-page="/Houses/Delete" asp-route-id="@Model.Family.Houses[i].Id">
+                                                <i class='bx bx-trash'></i>
+                                                <span>Delete</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+    </div>
+</div>

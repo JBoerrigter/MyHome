@@ -5,49 +5,54 @@
     ViewData["Title"] = "Neuer Zählerstand";
 }
 
-<div class="site-header">
-    <h1>@ViewData["Title"]</h1>
-</div>
+<div class="main-container">
+    <div class="main-header">
+        <h1>@ViewData["Title"]</h1>
+        <div class="main-actions"></div>
+    </div>
+    <div class="main-content">
 
-@if (Model.Error is not null)
-{
-    <div class="alert alert-danger" role="alert">@Model.Error</div>
-}
+        @if (Model.Error is not null)
+        {
+            <div class="alert alert-danger" role="alert">@Model.Error</div>
+        }
 
-<div class="row">
-    <div class="col-md-4">
-        <form method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-4">
+                <form method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="Input.ReadingTypeId" class="control-label"></label>
-                <select asp-for="Input.ReadingTypeId" class="form-control" asp-items="@ViewBag.Types"></select>
+                    <div class="form-group">
+                        <label asp-for="Input.ReadingTypeId" class="control-label"></label>
+                        <select asp-for="Input.ReadingTypeId" class="form-control" asp-items="@ViewBag.Types"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Year" class="control-label"></label>
+                        <input asp-for="Input.Year" class="form-control" value="@(DateTime.Now.Year - 1)" />
+                        <span asp-validation-for="Input.Year" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Value" class="control-label"></label>
+                        <input asp-for="Input.Value" class="form-control" />
+                        <span asp-validation-for="Input.Value" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Description" class="control-label"></label>
+                        <input asp-for="Input.Description" class="form-control" />
+                        <span asp-validation-for="Input.Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Image" class="control-label"></label>
+                        <input asp-for="Input.Image" class="form-control" type="file" />
+                        <span asp-validation-for="Input.Image" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-3">
+                        <button type="submit" class="btn btn-primary">Create</button> |
+                        <a asp-page="Index">Back to List</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.Year" class="control-label"></label>
-                <input asp-for="Input.Year" class="form-control" value="@(DateTime.Now.Year - 1)" />
-                <span asp-validation-for="Input.Year" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Value" class="control-label"></label>
-                <input asp-for="Input.Value" class="form-control" />
-                <span asp-validation-for="Input.Value" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Description" class="control-label"></label>
-                <input asp-for="Input.Description" class="form-control" />
-                <span asp-validation-for="Input.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Image" class="control-label"></label>
-                <input asp-for="Input.Image" class="form-control" type="file" />
-                <span asp-validation-for="Input.Image" class="text-danger"></span>
-            </div>
-            <div class="form-group mt-3">
-                <button type="submit" class="btn btn-primary">Create</button> |
-                <a asp-page="Index">Back to List</a>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 

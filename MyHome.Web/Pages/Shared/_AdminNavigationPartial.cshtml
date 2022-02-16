@@ -1,12 +1,27 @@
 ﻿@if (User.IsInRole("Administrator"))
 {
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Admin" asp-page="/MeterReadingTypes/Index">Zählerarten</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Admin" asp-page="/IncomeTypes/Index">Einkommentypen</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Admin" asp-page="/ExpenseTypes/Index">Kostentypen</a>
-    </li>
+    <div class="main-container mt-3">
+        <div class="main-header">
+            <h1>Admin Panel</h1>
+            <div class="main-actions"></div>
+        </div>
+        <div class="main-content">
+
+            <nav class="list-group">
+                <a class="list-group-item list-group-item-action text-dark" asp-area="Admin" asp-page="/MeterReadingTypes/Index">
+                    <i class='bx bx-spreadsheet'></i>
+                    <span>Zählerarten</span>
+                </a>
+                <a class="list-group-item list-group-item-action text-dark" asp-area="Admin" asp-page="/IncomeTypes/Index">
+                    <i class='bx bx-spreadsheet'></i>
+                    <span>Einkommentypen</span>
+                </a>
+                <a class="list-group-item list-group-item-action text-dark" asp-area="Admin" asp-page="/ExpenseTypes/Index">
+                    <i class='bx bx-spreadsheet'></i>
+                    <span>Kostentypen</span>
+                </a>
+            </nav>
+
+        </div>
+    </div>
 }

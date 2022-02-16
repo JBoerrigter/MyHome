@@ -4,58 +4,75 @@
     ViewData["Title"] = $"Housedetails";
 }
 
-<div>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ViewModel.Street)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ViewModel.Street)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ViewModel.Number)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ViewModel.Number)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ViewModel.PostalCode)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ViewModel.PostalCode)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ViewModel.City)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ViewModel.City)
-        </dd>
-    </dl>
+<div class="main-container">
+    <div class="main-header">
+        <h1>@ViewData["Title"]</h1>
+        <div class="main-actions"></div>
+    </div>
+    <div class="main-content">
+
+        <div>
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ViewModel.Street)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ViewModel.Street)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ViewModel.Number)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ViewModel.Number)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ViewModel.PostalCode)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ViewModel.PostalCode)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ViewModel.City)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ViewModel.City)
+                </dd>
+            </dl>
+        </div>
+    </div>
 </div>
 
 @if (Model.ViewModel.MeterReadings != null)
 {
-    <hr />
-    <div class="meterreadings-container">
-        <h3>Meter Readings</h3>
-        <ul class="list-group">
-            @if (Model.ViewModel.MeterReadings.Any())
-            {
-                foreach (var reading in Model.ViewModel.MeterReadings)
+    <div class="main-container mt-3">
+        <div class="main-header">
+            <h1>Meter Readings</h1>
+            <div class="main-actions">
+                <a asp-page="/MeterReadings/Create" class="btn btn-success">Add Reading</a>
+            </div>
+        </div>
+        <div class="main-content">
+
+            <ul class="list-group">
+                @if (Model.ViewModel.MeterReadings.Any())
                 {
-                    <li class="list-group-item list-group-item-action">
-                        @reading.ReadingType
-                    </li>
+                    foreach (var reading in Model.ViewModel.MeterReadings)
+                    {
+                        <li class="list-group-item list-group-item-action">
+                            @reading.ReadingType
+                        </li>
+                    }
                 }
-            }
-            else
-            {
-                <li class="list-group-item">No Meterreadings recorded</li>
-            }
-        </ul>
+                else
+                {
+                    <li class="list-group-item">No Meterreadings recorded</li>
+                }
+            </ul>
+
+        </div>
     </div>
 }
 
-<div>
+<div class="mt-3">
     <a asp-page="/Index">Back</a>
 </div>

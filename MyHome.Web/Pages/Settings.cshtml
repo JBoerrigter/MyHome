@@ -1,0 +1,23 @@
+﻿@page
+@model SettingsModel
+
+@{
+    ViewData["Title"] = "Settings";
+}
+
+<div class="main-container">
+    <div class="main-header">
+        <h1>@ViewData["Title"]</h1>
+        <div class="main-actions"></div>
+    </div>
+    <div class="main-content">
+
+        <div class="form-group">
+            <label for="mode" class="form-label">Mode</label>
+            <input type="checkbox" name="mode" />
+        </div>
+
+    </div>
+</div>
+
+<partial name="_AdminNavigationPartial" />

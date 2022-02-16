@@ -37,11 +37,18 @@
                     <i class='bx bx-search icon'></i>
                     <input type="text" placeholder="Search...">
                 </li>
-
                 <partial name="_NavigationPartial" />
             </div>
 
             <div class="bottom-content">
+
+                <li class="nav-link">
+                    <a href="/Settings">
+                        <i class='bx bx-cog icon'></i>
+                        <span class="text nav-text">Settings</span>
+                    </a>
+                </li>
+
                 <partial name="_LoginPartial" />
 
                 <li class="mode">
@@ -64,17 +71,8 @@
     <main role="main" class="content">
         <partial name="_PageIndicatorPartial" />
 
-        <div class="main-container">
-            <div class="main-header">
-                <h1>@ViewData["Title"]</h1>
-                <div class="main-actions">
-                    @RenderSection("PageActions", required: false)
-                </div>
-            </div>
-            <div class="main-content">
-                @RenderBody()
-            </div>
-        </div>
+        @RenderBody()
+
     </main>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
