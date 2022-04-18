@@ -37,10 +37,10 @@ namespace MyHome.Web.Pages.MeterReadings
 
             [MaxLength(250)]
             [Display(Name = "Bemerkung")]
-            public string? Description { get; set; }
+            public string Description { get; set; }
 
             [Display(Name = "Bild / Screenshot")]
-            public IFormFile? Image { get; set; }
+            public IFormFile Image { get; set; }
         }
 
         public CreateModel(ApplicationDbContext context)

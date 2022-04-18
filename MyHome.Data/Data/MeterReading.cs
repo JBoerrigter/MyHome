@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace MyHome.Web.Data
+namespace MyHome.Data
 {
     public class MeterReading
     {
