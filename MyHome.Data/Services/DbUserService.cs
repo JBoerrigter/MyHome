@@ -17,12 +17,11 @@ namespace MyHome.Data.Services
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) return null;
 
             // generate the hash
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword(password, username);
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
 
             // get all users matching
             var users = from user in dbContext.Users
                         where user.UserName == username || user.Email == username
-                        where user.PasswordHash == passwordHash
                         select user;
 
             // if user does not exist, authentication was not successful
@@ -32,6 +31,9 @@ namespace MyHome.Data.Services
             if (users.Count() > 1) throw new Exception("Please contact the administrator");
 
             var foundUser = users.First();
+
+            // verify password
+            if (!BCrypt.Net.BCrypt.Verify(password, foundUser.PasswordHash)) return null;
 
             return new ApplicationUser
             {
@@ -62,7 +64,7 @@ namespace MyHome.Data.Services
             ApplicationUser user = new(username)
             {
                 Email = email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(password, username)
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(password)
             };
 
             var result = dbContext.Users.Add(user);
