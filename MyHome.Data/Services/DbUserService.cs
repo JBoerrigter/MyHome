@@ -1,4 +1,5 @@
-﻿using MyHome.Shared;
+﻿using Microsoft.EntityFrameworkCore;
+using MyHome.Shared;
 using MyHome.Shared.Exceptions;
 
 namespace MyHome.Data.Services
@@ -12,9 +13,9 @@ namespace MyHome.Data.Services
             this.dbContext = dbContext;
         }
 
-        public ApplicationUser? Authenticate(string username, string password)
+        public async Task<ApplicationUser> AuthenticateAsync(string username, string password)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) return null;
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) return null!;
 
             // generate the hash
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
@@ -25,15 +26,15 @@ namespace MyHome.Data.Services
                         select user;
 
             // if user does not exist, authentication was not successful
-            if (!users.Any()) return null;
+            if (!users.Any()) return null!;
 
             // database is corrupt
             if (users.Count() > 1) throw new Exception("Please contact the administrator");
 
-            var foundUser = users.First();
+            var foundUser = await users.FirstAsync();
 
             // verify password
-            if (!BCrypt.Net.BCrypt.Verify(password, foundUser.PasswordHash)) return null;
+            if (!BCrypt.Net.BCrypt.Verify(password, foundUser.PasswordHash)) return null!;
 
             return new ApplicationUser
             {

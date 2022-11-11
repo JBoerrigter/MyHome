@@ -9,6 +9,7 @@ var connectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddScoped<IUserService<ApplicationUser>, DbUserService>();
 builder.Services.AddScoped<ITokenCreator<ApplicationUser>, JwtTokenCreator>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
