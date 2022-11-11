@@ -10,12 +10,10 @@ namespace MyHome.Data.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService<ApplicationUser> userService;
-    private readonly ITokenCreator<ApplicationUser> tokenCreator;
 
-    public UserController(IUserService<ApplicationUser> userService, ITokenCreator<ApplicationUser> tokenCreator)
+    public UserController(IUserService<ApplicationUser> userService)
     {
         this.userService = userService;
-        this.tokenCreator = tokenCreator;
     }
 
     [AllowAnonymous]
