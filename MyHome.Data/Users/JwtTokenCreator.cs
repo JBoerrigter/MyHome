@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace MyHome.Data
+namespace MyHome.Data.Users
 {
     public class JwtTokenCreator : ITokenCreator<ApplicationUser>
     {

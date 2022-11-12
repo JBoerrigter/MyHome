@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyHome.Shared;
 using MyHome.Shared.Requests;
 
-namespace MyHome.Data.Controllers
+namespace MyHome.Data.Homes
 {
     [Authorize]
     [ApiController]
@@ -39,8 +39,8 @@ namespace MyHome.Data.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult<HomeCreateResponse> CreateHome(HomeCreateRequest request)
+        [HttpPost("Create")]
+        public ActionResult<HomeViewModel> CreateHome(HomeCreateRequest request)
         {
             try
             {
@@ -48,18 +48,22 @@ namespace MyHome.Data.Controllers
                 if (claim is null) return Unauthorized();
 
                 var userId = claim.Value;
-                var familyId = userService.GetFamilyId(userId);
-                if (familyId is null) return BadRequest("You need to create a family first");
+                var familyId = request.FamilyId;
+                if (familyId <= 0) return BadRequest("You need to create a family first");
 
                 var id = homeService.Create(
-                    familyId.Value,
+                    request.FamilyId,
                     request.Street,
                     request.Number,
                     request.PostalCode,
                     request.City);
 
-                HomeCreateResponse response = new HomeCreateResponse();
+                HomeViewModel response = new HomeViewModel();
                 response.Id = id;
+                response.Street = request.Street;
+                response.Number = request.Number;
+                response.PostalCode = request.PostalCode;
+                response.City = request.City;
 
                 return Created(Request.PathBase, response);
             }

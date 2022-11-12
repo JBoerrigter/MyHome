@@ -2,7 +2,7 @@
 using MyHome.Shared;
 using MyHome.Shared.ViewModels;
 
-namespace MyHome.Data.Services
+namespace MyHome.Data.Families
 {
     public class DbFamilyService : IFamilyService
     {

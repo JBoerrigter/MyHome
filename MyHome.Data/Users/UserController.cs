@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyHome.Shared;
 
-namespace MyHome.Data.Controllers;
+namespace MyHome.Data.Users;
 
 [Authorize]
 [ApiController]

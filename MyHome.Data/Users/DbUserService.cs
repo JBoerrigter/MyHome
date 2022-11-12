@@ -2,7 +2,7 @@
 using MyHome.Shared;
 using MyHome.Shared.Exceptions;
 
-namespace MyHome.Data.Services
+namespace MyHome.Data.Users
 {
     public class DbUserService : IUserService<ApplicationUser>
     {

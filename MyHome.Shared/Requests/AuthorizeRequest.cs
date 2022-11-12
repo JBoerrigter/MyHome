@@ -1,4 +1,4 @@
-namespace MyHome.Data.Authorize;
+namespace MyHome.Shared.Authorize;
 
 public record AuthorizeRequest (
     string UserName,

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MyHome.Shared;
+using MyHome.Shared.Authorize;
 
 namespace MyHome.Data.Authorize;
 

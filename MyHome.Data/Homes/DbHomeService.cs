@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MyHome.Shared;
 
-namespace MyHome.Data.Services
+namespace MyHome.Data.Homes
 {
     public class DbHomeService : IHomeService
     {

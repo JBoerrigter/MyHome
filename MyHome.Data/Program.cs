@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using MyHome.Data;
-using MyHome.Data.Services;
+using MyHome.Data.Families;
+using MyHome.Data.Homes;
+using MyHome.Data.Users;
 using MyHome.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,14 +11,26 @@ var connectionString = builder.Configuration.GetConnectionString("Default");
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddScoped<IUserService<ApplicationUser>, DbUserService>();
-builder.Services.AddScoped<ITokenCreator<ApplicationUser>, JwtTokenCreator>();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Description = "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+});
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlite(connectionString);
 });
+
+builder.Services.AddScoped<IUserService<ApplicationUser>, DbUserService>();
+builder.Services.AddScoped<ITokenCreator<ApplicationUser>, JwtTokenCreator>();
+builder.Services.AddScoped<IFamilyService, DbFamilyService>();
+builder.Services.AddScoped<IHomeService, DbHomeService>();
 
 var app = builder.Build();
 
