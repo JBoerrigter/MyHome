@@ -1,14 +1,12 @@
-﻿using System;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyHome.Shared;
 using MyHome.Shared.Requests;
 using MyHome.Shared.ViewModels;
+using System.Security.Claims;
 
 namespace MyHome.Data.Families;
 
-[Authorize]
 [ApiController]
 [Route("[Controller]")]
 public class FamilyController : ControllerBase
@@ -20,12 +18,19 @@ public class FamilyController : ControllerBase
         this.familyService = familyService;
     }
 
+    [Authorize]
     [HttpGet("{id}")]
     public ActionResult<FamilyViewModel> GetFamily(int id)
     {
         try
         {
             var family = familyService.Get(id);
+
+            if (family is null)
+            {
+                return NotFound();
+            }
+
             var viewModel = new FamilyViewModel
             {
                 Id = family.Id,

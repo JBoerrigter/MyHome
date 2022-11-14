@@ -1,0 +1,7 @@
+POST https://localhost:7094/Family/Create
+Content-Type: application/json
+Authorization: bearer 
+
+{
+    "name": "Boerrigter"
+}

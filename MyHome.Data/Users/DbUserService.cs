@@ -22,7 +22,7 @@ namespace MyHome.Data.Users
 
             // get all users matching
             var users = from user in dbContext.Users
-                        where user.UserName == username || user.Email == username
+                        where (user.UserName == username || user.Email == username) 
                         select user;
 
             // if user does not exist, authentication was not successful
@@ -38,6 +38,7 @@ namespace MyHome.Data.Users
 
             return new ApplicationUser
             {
+                Id = foundUser.Id,
                 UserName = foundUser.UserName,
                 Email = foundUser.Email,
                 FamilyId = foundUser.FamilyId,

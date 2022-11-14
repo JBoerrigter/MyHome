@@ -1,0 +1,3 @@
+GET https://localhost:7094/Family/1
+Content-Type: application/json
+Authorization: bearer 
