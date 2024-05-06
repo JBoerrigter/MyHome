@@ -9,6 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.db
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -356,3 +357,4 @@ MigrationBackup/
 /MyHome.Web/Data/*.db
 /MyHome.Web/Data/*.db-shm
 /MyHome.Web/Data/*.db-wal
+/MyHome.Data/MyHome.db
