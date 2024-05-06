@@ -13,12 +13,14 @@ namespace MyHome.Data.Families
             this.dbContext = dbContext;
         }
 
-        public int Create(string name, string userId)
+        public Guid Create(string name, Guid userId)
         {
-            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if (userId == Guid.Empty) throw new ArgumentNullException(nameof(name));
 
             ApplicationUser? user = dbContext.Users.Find(userId);
             if (user is null) throw new KeyNotFoundException("User not found");
+
+            if (user.FamilyId is not null) throw new ArgumentException("Only one family allowed");
 
             Family entity = new Family
             {
@@ -34,9 +36,12 @@ namespace MyHome.Data.Families
             return result.Entity.Id;
         }
 
-        public FamilyViewModel? Get(int id)
+        public FamilyViewModel? Get(Guid userId)
         {
-            Family? entity = dbContext.Families.Find(id);
+            var user = dbContext.Users.Find(userId);
+            if (user is null) throw new KeyNotFoundException("User not found");
+
+            Family? entity = dbContext.Families.Find(user.FamilyId);
             FamilyViewModel? viewModel = null;
 
             if (entity is not null)
@@ -51,7 +56,7 @@ namespace MyHome.Data.Families
             return viewModel;
         }
 
-        public int Join(string familyId, string userId)
+        public Guid Join(Guid familyId, Guid userId)
         {
             throw new NotImplementedException();
         }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MyHome.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
         public DbSet<Family> Families { get; set; } = null!;
         public DbSet<House> Houses { get; set; } = null!;

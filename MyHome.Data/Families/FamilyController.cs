@@ -18,13 +18,30 @@ public class FamilyController : ControllerBase
         this.familyService = familyService;
     }
 
+    /// <summary>
+    /// Gets the family for the current user
+    /// </summary>
+    /// <response code="200">Details for the family</response>
+    /// <response code="400">Unexpected Error. See response message</response>
+    /// <response code="401">Request or user is not authorized</response>
+    /// <response code="404">No family was found for the user</response>
     [Authorize]
-    [HttpGet("{id}")]
-    public ActionResult<FamilyViewModel> GetFamily(int id)
+    [HttpGet]
+    [ProducesResponseType(typeof(ActionResult<FamilyViewModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<FamilyViewModel> GetFamily()
     {
         try
         {
-            var family = familyService.Get(id);
+            var claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (claim is null) return Unauthorized();
+
+            var userId = Guid.Parse(claim.Value);
+            if (userId == Guid.Empty) return Unauthorized();
+
+            var family = familyService.Get(userId);
 
             if (family is null)
             {
@@ -52,8 +69,8 @@ public class FamilyController : ControllerBase
             var claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
             if (claim is null) return Unauthorized();
 
-            var userId = claim.Value;
-            if (userId is null) return Unauthorized();
+            var userId = Guid.Parse(claim.Value);
+            if (userId == Guid.Empty) return Unauthorized();
 
             var familyId = familyService.Create(request.Name, userId);
             var response = new FamilyViewModel

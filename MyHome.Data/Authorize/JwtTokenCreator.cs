@@ -42,9 +42,10 @@ namespace MyHome.Data.Authorize
         private static IEnumerable<Claim> GetClaims(ApplicationUser user)
         {
             List<Claim> claims = new();
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
             if (!string.IsNullOrEmpty(user.UserName)) claims.Add(new Claim(ClaimTypes.Name, user.UserName));
             if (!string.IsNullOrEmpty(user.Email)) claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            if (user.FamilyId is not null && user.FamilyId != Guid.Empty) claims.Add(new Claim(ClaimTypes.Surname, user.FamilyId.ToString()!));
             return claims;
         }
 

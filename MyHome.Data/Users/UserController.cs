@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyHome.Shared;
+using MyHome.Shared.Requests;
 
 namespace MyHome.Data.Users;
 
@@ -18,9 +19,9 @@ public class UserController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("Create")]
-    public ActionResult<UserViewModel> Create(UserViewModel model)
+    public ActionResult<UserViewModel> Create(UserCreateRequest request)
     {
-        UserViewModel user = userService.Create(model.Username, model.Email, model.Password, model.PasswordConfirmation);
+        UserViewModel user = userService.Create(request.UserName, request.Email, request.Password, request.PasswordConfirmation);
 
         if (user is null)
         {
@@ -28,7 +29,7 @@ public class UserController : ControllerBase
         }
         else
         {
-            return Ok(user);
+            return Created(Request.PathBase, user);
         }
     }
 }

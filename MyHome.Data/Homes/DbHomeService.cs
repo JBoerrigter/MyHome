@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using MyHome.Shared;
+﻿using MyHome.Shared;
 
 namespace MyHome.Data.Homes
 {
@@ -13,7 +11,7 @@ namespace MyHome.Data.Homes
             this.dbContext = dbContext;
         }
 
-        public int Create(int familyId, string street, string number, string postalCode, string city)
+        public Guid Create(Guid familyId, string street, string number, string postalCode, string city)
         {
             if (string.IsNullOrEmpty(street)) throw new ArgumentNullException(nameof(street));
             if (string.IsNullOrEmpty(number)) throw new ArgumentNullException(nameof(number));
@@ -37,7 +35,7 @@ namespace MyHome.Data.Homes
             return result.Entity.Id;
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             House? entity = dbContext.Houses.Find(id);
 
@@ -48,7 +46,7 @@ namespace MyHome.Data.Homes
             }
         }
 
-        public HomeViewModel? Get(int id)
+        public HomeViewModel? Get(Guid id)
         {
             House? entity = dbContext.Houses.Find(id);
             HomeViewModel? viewModel = null;

@@ -1,20 +1,18 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace MyHome.Data
+﻿namespace MyHome.Data
 {
     public class Expense
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Descrition { get; set; } = null!;
         public double Value { get; set; }
         
         public DateTime Date { get; set; }
         public DateTime Created { get; set; }
 
-        public string UserId { get; set; } = null!;
+        public Guid UserId { get; set; }
         public ApplicationUser? User { get; set; }
 
-        public int ExpenseTypeId { get; set; }
+        public Guid ExpenseTypeId { get; set; }
         public ExpenseType? ExpenseType { get; set; }
     }
 }

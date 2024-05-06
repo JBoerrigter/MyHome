@@ -25,7 +25,7 @@ namespace MyHome.Data.Homes
         }
 
         [HttpGet("{id}")]
-        public ActionResult<HomeViewModel> GetHome(int id)
+        public ActionResult<HomeViewModel> GetHome(Guid id)
         {
             try
             {
@@ -47,9 +47,9 @@ namespace MyHome.Data.Homes
                 var claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
                 if (claim is null) return Unauthorized();
 
-                var userId = claim.Value;
+                var userId = Guid.Parse(claim.Value);
                 var familyId = request.FamilyId;
-                if (familyId <= 0) return BadRequest("You need to create a family first");
+                if (familyId == Guid.Empty) return BadRequest("You need to create a family first");
 
                 var id = homeService.Create(
                     request.FamilyId,

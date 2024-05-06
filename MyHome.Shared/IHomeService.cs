@@ -1,11 +1,11 @@
 ﻿using System;
 namespace MyHome.Shared
 {
-	public interface IHomeService
+    public interface IHomeService
 	{
-		HomeViewModel Get(int id);
-		int Create(int familyId, string street, string number, string postalCode, string city);
-		void Delete(int id);
+		HomeViewModel Get(Guid id);
+		Guid Create(Guid familyId, string street, string number, string postalCode, string city);
+		void Delete(Guid id);
 	}
 }
 

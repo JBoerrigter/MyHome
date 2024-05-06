@@ -3,7 +3,7 @@
 namespace MyHome.Shared.Requests
 {
 public record HomeCreateRequest(
-    int FamilyId,
+    Guid FamilyId,
     string Street,
     string Number,
     string PostalCode,
