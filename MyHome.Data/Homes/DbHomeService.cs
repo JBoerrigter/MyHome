@@ -46,24 +46,18 @@ namespace MyHome.Data.Homes
             }
         }
 
-        public HomeViewModel? Get(Guid id)
+        public IEnumerable<HomeViewModel> GetByFamilyId(Guid familyId)
         {
-            House? entity = dbContext.Houses.Find(id);
-            HomeViewModel? viewModel = null;
-
-            if (entity is not null)
-            {
-                viewModel = new HomeViewModel
+            return dbContext.Houses
+                .Where(h => h.FamilyId == familyId)
+                .Select(h => new HomeViewModel
                 {
-                    Id = entity.Id,
-                    Street = entity.Street,
-                    Number = entity.Number,
-                    PostalCode = entity.Number,
-                    City = entity.City
-                };
-            }
-
-            return viewModel;
+                    Id = h.Id,
+                    Street = h.Street,
+                    Number = h.Number,
+                    PostalCode = h.Number,
+                    City = h.City
+                });
         }
     }
 }

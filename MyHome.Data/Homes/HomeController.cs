@@ -24,14 +24,20 @@ namespace MyHome.Data.Homes
             this.userService = userService;
         }
 
-        [HttpGet("{id}")]
-        public ActionResult<HomeViewModel> GetHome(Guid id)
+        [HttpGet]
+        public ActionResult<IEnumerable<HomeViewModel>> GetHomes()
         {
             try
             {
-                HomeViewModel home = homeService.Get(id);
-                if (home is null) return NotFound();
-                return Ok(home);
+                var claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname);
+                if (claim is null) return Unauthorized();
+
+                var familyId = Guid.Parse(claim.Value);
+                if (familyId == Guid.Empty) return Unauthorized();
+
+                IEnumerable<HomeViewModel> homes = homeService.GetByFamilyId(familyId);
+                if (homes == Enumerable.Empty<HomeViewModel>()) return NotFound();
+                return Ok(homes);
             }
             catch (Exception ex)
             {

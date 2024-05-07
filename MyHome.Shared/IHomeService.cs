@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 namespace MyHome.Shared
 {
     public interface IHomeService
 	{
-		HomeViewModel Get(Guid id);
+		IEnumerable<HomeViewModel> GetByFamilyId(Guid familyId);
 		Guid Create(Guid familyId, string street, string number, string postalCode, string city);
 		void Delete(Guid id);
 	}
