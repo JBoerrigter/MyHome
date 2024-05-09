@@ -65,10 +65,10 @@ namespace MyHome.Web.Pages.Houses
 
             if (user is null)
             {
-                return NotFound("Die Anmeldung ist ungültig!");
+                return NotFound("Die Anmeldung ist ungï¿½ltig!");
             }
 
-            if (!user.FamilyId.HasValue)
+            if (string.IsNullOrEmpty(user.FamilyId))
             {
                 return BadRequest("Sie haben noch keine Familie. Bitte erstellen Sie zuerst eine Familie!");
             }
@@ -79,7 +79,7 @@ namespace MyHome.Web.Pages.Houses
                 Number = Input.Number,
                 PostalCode = Input.PostalCode,
                 City = Input.City,
-                FamilyId = user.FamilyId.Value
+                FamilyId = user.FamilyId
             };
 
             await _DbContext.Houses.AddAsync(house);

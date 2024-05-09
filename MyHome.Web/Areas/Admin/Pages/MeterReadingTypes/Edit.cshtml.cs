@@ -21,7 +21,7 @@ namespace MyHome.Web.Areas.Admin.Pages.MeterReadingTypes
         [BindProperty]
         public MeterReadingType MeterReadingType { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string? id)
         {
             if (id == null)
             {
@@ -67,7 +67,7 @@ namespace MyHome.Web.Areas.Admin.Pages.MeterReadingTypes
             return RedirectToPage("./Index");
         }
 
-        private bool MeterReadingTypeExists(int id)
+        private bool MeterReadingTypeExists(string id)
         {
             return _context.MetersReadingTypes.Any(e => e.Id == id);
         }

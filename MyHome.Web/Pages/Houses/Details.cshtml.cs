@@ -14,19 +14,19 @@ namespace MyHome.Web.Pages.Houses
     {
         public class DetailsViewModel
         {
-            [DisplayName("Straße")]
-            public string Street { get; set; }
+            [DisplayName("StraÃŸe")]
+            public string? Street { get; set; }
 
             [DisplayName("Hausnummer")]
-            public string Number { get; set; }
+            public string? Number { get; set; }
 
             [DisplayName("PLZ")]
-            public string PostalCode { get; set; }
+            public string? PostalCode { get; set; }
 
             [DisplayName("Stadt")]
-            public string City { get; set; }
+            public string? City { get; set; }
 
-            public List<MeterReading> MeterReadings { get; set; }
+            public List<MeterReading>? MeterReadings { get; set; }
         }
 
         private readonly ApplicationDbContext _DbContext;
@@ -38,7 +38,7 @@ namespace MyHome.Web.Pages.Houses
             _DbContext = dbContext;
         }
 
-        public async Task<IActionResult> OnGet(int? id)
+        public async Task<IActionResult> OnGet(string? id)
         {
             if (id is null)
             {
@@ -56,7 +56,7 @@ namespace MyHome.Web.Pages.Houses
 
             if (user is null)
             {
-                return NotFound("Die Anmeldung ist ungültig!");
+                return NotFound("Die Anmeldung ist ungÃ¼ltig!");
             }
 
             var house = await _DbContext.Houses
@@ -70,7 +70,7 @@ namespace MyHome.Web.Pages.Houses
 
             if (house.FamilyId != user.FamilyId)
             {
-                return BadRequest("Sie sind nicht berechtigt für dieses Haus");
+                return BadRequest("Sie sind nicht berechtigt fï¿½r dieses Haus");
             }
 
             ViewModel = new DetailsViewModel

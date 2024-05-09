@@ -21,7 +21,7 @@ namespace MyHome.Web.Pages.Expenses
         [BindProperty]
         public Expense Expense { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string? id)
         {
             if (id == null)
             {
@@ -39,7 +39,7 @@ namespace MyHome.Web.Pages.Expenses
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(string? id)
         {
             if (id == null)
             {

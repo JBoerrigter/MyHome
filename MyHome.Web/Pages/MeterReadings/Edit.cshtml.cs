@@ -22,7 +22,7 @@ namespace MyHome.Web.Pages.MeterReadings
         [BindProperty]
         public MeterReading MeterReading { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string? id)
         {
             if (id == null)
             {
@@ -72,7 +72,7 @@ namespace MyHome.Web.Pages.MeterReadings
             return RedirectToPage("./Index");
         }
 
-        private bool MeterReadingExists(int id)
+        private bool MeterReadingExists(string id)
         {
             return _context.MetersReadings.Any(e => e.Id == id);
         }

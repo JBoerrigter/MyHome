@@ -4,7 +4,7 @@ namespace MyHome.Web.Data
 {
     public class Expense
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Descrition { get; set; }
         public double Value { get; set; }
         

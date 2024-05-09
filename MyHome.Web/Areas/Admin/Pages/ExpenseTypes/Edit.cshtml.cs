@@ -21,7 +21,7 @@ namespace MyHome.Web.Areas.Admin.Pages.ExpenseTypes
         [BindProperty]
         public ExpenseType ExpenseType { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string? id)
         {
             if (id == null)
             {
@@ -67,7 +67,7 @@ namespace MyHome.Web.Areas.Admin.Pages.ExpenseTypes
             return RedirectToPage("./Index");
         }
 
-        private bool ExpenseTypeExists(int id)
+        private bool ExpenseTypeExists(string id)
         {
             return _context.ExpenseTypes.Any(e => e.Id == id);
         }

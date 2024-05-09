@@ -20,7 +20,7 @@ namespace MyHome.Web.Pages.Expenses
 
         public Expense Expense { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string? id)
         {
             if (id == null)
             {

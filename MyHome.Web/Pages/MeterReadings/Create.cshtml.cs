@@ -25,7 +25,7 @@ namespace MyHome.Web.Pages.MeterReadings
         {
             [Required]
             [Display(Name = "Art")]
-            public int ReadingTypeId { get; set; }
+            public string ReadingTypeId { get; set; }
 
             [Required]
             [Display(Name = "Jahr")]
