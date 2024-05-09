@@ -10,18 +10,18 @@ namespace MyHome.Web.Areas.Admin.Pages.IncomeTypes
     [Authorize(Roles = "Administrator")]
     public class IndexModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public IndexModel(MyHome.Web.Data.ApplicationDbContext context)
+        public IndexModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public IList<IncomeType> IncomeType { get;set; }
 
         public async Task OnGetAsync()
         {
-            IncomeType = await _context.IncomeTypes.ToListAsync();
+            IncomeType = await _dbContext.IncomeTypes.ToListAsync();
         }
     }
 }

@@ -11,11 +11,11 @@ namespace MyHome.Web.Pages.Expenses
     [Authorize]
     public class DeleteModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public DeleteModel(MyHome.Web.Data.ApplicationDbContext context)
+        public DeleteModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         [BindProperty]
@@ -28,7 +28,7 @@ namespace MyHome.Web.Pages.Expenses
                 return NotFound();
             }
 
-            Expense = await _context.Expenses
+            Expense = await _dbContext.Expenses
                 .Include(e => e.ExpenseType)
                 .Include(e => e.User).FirstOrDefaultAsync(m => m.Id == id);
 
@@ -46,12 +46,12 @@ namespace MyHome.Web.Pages.Expenses
                 return NotFound();
             }
 
-            Expense = await _context.Expenses.FindAsync(id);
+            Expense = await _dbContext.Expenses.FindAsync(id);
 
             if (Expense != null)
             {
-                _context.Expenses.Remove(Expense);
-                await _context.SaveChangesAsync();
+                _dbContext.Expenses.Remove(Expense);
+                await _dbContext.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");

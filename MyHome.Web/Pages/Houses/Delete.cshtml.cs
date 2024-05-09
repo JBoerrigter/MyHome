@@ -13,31 +13,31 @@ namespace MyHome.Web.Pages.Houses
     {
         public class DeleteViewModel
         {
-            public int Id { get; set; }
+            public string? Id { get; set; }
 
             [DisplayName("Straße")]
-            public string Street { get; set; }
+            public string? Street { get; set; }
 
             [DisplayName("Hausnummer")]
-            public string Number { get; set; }
+            public string? Number { get; set; }
 
             [DisplayName("PLZ")]
-            public string PostalCode { get; set; }
+            public string? PostalCode { get; set; }
 
             [DisplayName("Stadt")]
-            public string City { get; set; }
+            public string? City { get; set; }
         }
 
-        private readonly ApplicationDbContext _DbContext;
+        private readonly ApplicationDbContext _dbContext;
 
         public DeleteViewModel ViewModel { get; set; }
 
         public DeleteModel(ApplicationDbContext dbContext)
         {
-            _DbContext = dbContext;
+            _dbContext = dbContext;
         }
 
-        public async Task<IActionResult> OnGet(int? id)
+        public async Task<IActionResult> OnGet(string id)
         {
             if (id is null)
             {
@@ -51,14 +51,14 @@ namespace MyHome.Web.Pages.Houses
                 return Unauthorized();
             }
 
-            var user = await _DbContext.Users.FindAsync(userId);
+            var user = await _dbContext.Users.FindAsync(userId);
 
             if (user is null)
             {
                 return NotFound("Die Anmeldung ist ungültig!");
             }
 
-            var house = await _DbContext.Houses.FindAsync(id);
+            var house = await _dbContext.Houses.FindAsync(id);
 
             if (house == null)
             {
@@ -81,19 +81,19 @@ namespace MyHome.Web.Pages.Houses
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(string id)
         {
             if (!ModelState.IsValid)
             {
                 return await OnGet(id);
             }
 
-            var house = await _DbContext.Houses.FindAsync(id);
+            var house = await _dbContext.Houses.FindAsync(id);
 
             if (house != null)
             {
-                _DbContext.Houses.Remove(house);
-                await _DbContext.SaveChangesAsync();
+                _dbContext.Houses.Remove(house);
+                await _dbContext.SaveChangesAsync();
             }
 
             return Redirect("/");

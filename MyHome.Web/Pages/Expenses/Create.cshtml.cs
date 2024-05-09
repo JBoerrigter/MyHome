@@ -11,17 +11,17 @@ namespace MyHome.Web.Pages.Expenses
     [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public CreateModel(MyHome.Web.Data.ApplicationDbContext context)
+        public CreateModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public IActionResult OnGet()
         {
-        ViewData["ExpenseTypeId"] = new SelectList(_context.ExpenseTypes, "Id", "Id");
-        ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+        ViewData["ExpenseTypeId"] = new SelectList(_dbContext.ExpenseTypes, "Id", "Id");
+        ViewData["UserId"] = new SelectList(_dbContext.Users, "Id", "Id");
             return Page();
         }
 
@@ -36,8 +36,8 @@ namespace MyHome.Web.Pages.Expenses
                 return Page();
             }
 
-            _context.Expenses.Add(Expense);
-            await _context.SaveChangesAsync();
+            _dbContext.Expenses.Add(Expense);
+            await _dbContext.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

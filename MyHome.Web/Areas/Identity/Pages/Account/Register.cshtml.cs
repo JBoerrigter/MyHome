@@ -19,12 +19,12 @@ namespace MyHome.Web.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<ApplicationUser> _SignInManager;
-        private readonly UserManager<ApplicationUser> _UserManager;
-        private readonly IUserStore<ApplicationUser> _UserStore;
-        private readonly IUserEmailStore<ApplicationUser> _EmailStore;
-        private readonly ILogger<RegisterModel> _Logger;
-        private readonly IEmailSender _EmailSender;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IUserEmailStore<ApplicationUser> _emailStore;
+        private readonly ILogger<RegisterModel> _logger;
+        private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -33,12 +33,12 @@ namespace MyHome.Web.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
-            _UserManager = userManager;
-            _UserStore = userStore;
-            _EmailStore = GetEmailStore();
-            _SignInManager = signInManager;
-            _Logger = logger;
-            _EmailSender = emailSender;
+            _userManager = userManager;
+            _userStore = userStore;
+            _emailStore = GetEmailStore();
+            _signInManager = signInManager;
+            _logger = logger;
+            _emailSender = emailSender;
         }
 
         /// <summary>
@@ -99,34 +99,34 @@ namespace MyHome.Web.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
-            ExternalLogins = (await _SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
 
-                await _UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _EmailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                var result = await _UserManager.CreateAsync(user, Input.Password);
+                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-                    _Logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation("User created a new account with password.");
 
-                    var roleResult = await _UserManager.AddToRoleAsync(user, "Standard");
+                    var roleResult = await _userManager.AddToRoleAsync(user, "Standard");
 
                     if (roleResult.Succeeded)
                     {
-                        _Logger.LogInformation("Assigned the 'Standard' role to the user.");
+                        _logger.LogInformation("Assigned the 'Standard' role to the user.");
                     }
 
-                    var userId = await _UserManager.GetUserIdAsync(user);
-                    var code = await _UserManager.GenerateEmailConfirmationTokenAsync(user);
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
@@ -134,16 +134,16 @@ namespace MyHome.Web.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _EmailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    if (_UserManager.Options.SignIn.RequireConfirmedAccount)
+                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
                     {
-                        await _SignInManager.SignInAsync(user, isPersistent: false);
+                        await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
                 }
@@ -173,11 +173,11 @@ namespace MyHome.Web.Areas.Identity.Pages.Account
 
         private IUserEmailStore<ApplicationUser> GetEmailStore()
         {
-            if (!_UserManager.SupportsUserEmail)
+            if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<ApplicationUser>)_UserStore;
+            return (IUserEmailStore<ApplicationUser>)_userStore;
         }
     }
 }

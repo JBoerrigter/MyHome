@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MyHome.Web.Data;
 
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
 
 namespace MyHome.Web.Pages.MeterReadings
 {
@@ -18,6 +17,9 @@ namespace MyHome.Web.Pages.MeterReadings
 
         [BindProperty]
         public InputModel Input { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string HouseId { get; set; }
 
         public string Error { get; set; }
 
@@ -58,40 +60,43 @@ namespace MyHome.Web.Pages.MeterReadings
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
-                    var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-
-                    if (userId is null)
-                    {
-                        return Unauthorized();
-                    }
-
-                    var reading = new MeterReading
-                    {
-                        ReadingTypeId = Input.ReadingTypeId,
-                        Year = Input.Year,
-                        Value = Input.Value,
-                        Description = Input.Description,
-                        Created = DateTime.Now,
-                        UserId = userId.Value
-                    };
-
-                    if (Input.Image is not null)
-                    {
-                        var buffer = new byte[Input.Image.Length];
-                        using (var stream = new MemoryStream(buffer))
-                        {
-                            await Input.Image.CopyToAsync(stream);
-                        }
-                        reading.Image = buffer;
-                    }
-
-                    _context.MetersReadings.Add(reading);
-                    await _context.SaveChangesAsync();
-
-                    return RedirectToPage("./Index");
+                    return Page();
                 }
+
+                var userId = User.GetId();
+
+                if (userId is null)
+                {
+                    return Unauthorized();
+                }
+
+                var reading = new MeterReading
+                {
+                    ReadingTypeId = Input.ReadingTypeId,
+                    HouseId = this.HouseId,
+                    Year = Input.Year,
+                    Value = Input.Value,
+                    Description = Input.Description,
+                    Created = DateTime.Now,
+                    UserId = userId
+                };
+
+                if (Input.Image is not null)
+                {
+                    var buffer = new byte[Input.Image.Length];
+                    using (var stream = new MemoryStream(buffer))
+                    {
+                        await Input.Image.CopyToAsync(stream);
+                    }
+                    reading.Image = buffer;
+                }
+
+                _context.MetersReadings.Add(reading);
+                await _context.SaveChangesAsync();
+
+                return Redirect($"/Houses/{HouseId}");
             }
             catch (Exception ex)
             {

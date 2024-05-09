@@ -11,13 +11,13 @@ namespace MyHome.Web.Pages.Families
     [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly ApplicationDbContext _DbContext;
+        private readonly ApplicationDbContext _dbContext;
 
-        [BindProperty] public string Name { get; set; }
+        [BindProperty] public string? Name { get; set; } 
 
         public CreateModel(ApplicationDbContext dbContext)
         {
-            _DbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         public IActionResult OnGet()
@@ -32,14 +32,14 @@ namespace MyHome.Web.Pages.Families
                return BadRequest(ModelState);
             }
 
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            var userId = User.GetId();
 
             if (userId == null)
             {
                 return Unauthorized();
             }
 
-            var user = await _DbContext.Users.FindAsync(userId.Value);
+            var user = await _dbContext.Users.FindAsync(userId);
 
             if (user == null)
             {
@@ -53,11 +53,11 @@ namespace MyHome.Web.Pages.Families
             };
             family.Members.Add(user);
 
-            var result = await _DbContext.Families.AddAsync(family);
+            var result = await _dbContext.Families.AddAsync(family);
             
             user.Family = result.Entity;
 
-            await _DbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             return Redirect("/");
         }

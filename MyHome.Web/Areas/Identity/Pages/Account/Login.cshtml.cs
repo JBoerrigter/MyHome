@@ -18,13 +18,13 @@ namespace MyHome.Web.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-        private readonly ApplicationDbContext _DbContext;
+        private readonly ApplicationDbContext _dbContext;
 
         public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, ApplicationDbContext dbContext)
         {
             _signInManager = signInManager;
             _logger = logger;
-            _DbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace MyHome.Web.Areas.Identity.Pages.Account
 
         private bool CheckDatabaseExists()
         {
-            return !_DbContext.Database.GetPendingMigrations().Any();
+            return !_dbContext.Database.GetPendingMigrations().Any();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)

@@ -13,6 +13,9 @@ namespace MyHome.Web.Pages.MeterReadings
     {
         private readonly MyHome.Web.Data.ApplicationDbContext _context;
 
+        [BindProperty(SupportsGet = true)]
+        public string HouseId { get; set; }
+
         [BindProperty] public MeterReading MeterReading { get; set; }
         public string Base64Image { get; set; }
 
@@ -61,7 +64,7 @@ namespace MyHome.Web.Pages.MeterReadings
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Index");
+            return Redirect($"/Houses/{HouseId}");
         }
     }
 }

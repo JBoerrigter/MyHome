@@ -50,10 +50,10 @@
                 @Html.DisplayFor(modelItem => item.Created)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.User!.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ExpenseType.Id)
+                @Html.DisplayFor(modelItem => item.ExpenseType!.Id)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

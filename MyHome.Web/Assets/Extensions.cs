@@ -5,7 +5,7 @@ namespace MyHome.Web
     public static class Extensions
     {
 
-        public static string GetId(this ClaimsPrincipal principal)
+        public static string? GetId(this ClaimsPrincipal principal)
         {
             var userId = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
 

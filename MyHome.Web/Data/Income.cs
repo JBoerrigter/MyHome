@@ -4,7 +4,7 @@ namespace MyHome.Web.Data
 {
     public class Income
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Description { get; set; }
         public DateTime Created { get; set; }
 

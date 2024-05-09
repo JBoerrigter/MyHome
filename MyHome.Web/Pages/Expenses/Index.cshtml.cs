@@ -10,18 +10,18 @@ namespace MyHome.Web.Pages.Expenses
     [Authorize]
     public class IndexModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public IndexModel(MyHome.Web.Data.ApplicationDbContext context)
+        public IndexModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public IList<Expense> Expense { get;set; }
 
         public async Task OnGetAsync()
         {
-            Expense = await _context.Expenses
+            Expense = await _dbContext.Expenses
                 .Include(e => e.ExpenseType)
                 .Include(e => e.User).ToListAsync();
         }

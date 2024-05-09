@@ -12,24 +12,27 @@ namespace MyHome.Web.Pages.MeterReadings
     [Authorize]
     public class EditModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public EditModel(MyHome.Web.Data.ApplicationDbContext context)
+        public EditModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
+
+        [BindProperty(SupportsGet = true)]
+        public string HouseId { get; set; }
 
         [BindProperty]
         public MeterReading MeterReading { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string? id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            MeterReading = await _context.MetersReadings
+            MeterReading = await _dbContext.MetersReadings
                 .Include(m => m.ReadingType)
                 .Include(m => m.User).FirstOrDefaultAsync(m => m.Id == id);
 
@@ -37,8 +40,8 @@ namespace MyHome.Web.Pages.MeterReadings
             {
                 return NotFound();
             }
-           ViewData["ReadingTypeId"] = new SelectList(_context.MetersReadingTypes, "Id", "Id");
-           ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+           ViewData["ReadingTypeId"] = new SelectList(_dbContext.MetersReadingTypes, "Id", "Id");
+           ViewData["UserId"] = new SelectList(_dbContext.Users, "Id", "Id");
             return Page();
         }
 
@@ -51,11 +54,11 @@ namespace MyHome.Web.Pages.MeterReadings
                 return Page();
             }
 
-            _context.Attach(MeterReading).State = EntityState.Modified;
+            _dbContext.Attach(MeterReading).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -69,12 +72,12 @@ namespace MyHome.Web.Pages.MeterReadings
                 }
             }
 
-            return RedirectToPage("./Index");
+            return Redirect($"/Houses/{HouseId}");
         }
 
         private bool MeterReadingExists(string id)
         {
-            return _context.MetersReadings.Any(e => e.Id == id);
+            return _dbContext.MetersReadings.Any(e => e.Id == id);
         }
     }
 }

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 using MyHome.Web.Data;
 
@@ -11,11 +10,11 @@ namespace MyHome.Web.Areas.Admin.Pages.IncomeTypes
     [Authorize(Roles = "Administrator")]
     public class CreateModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public CreateModel(MyHome.Web.Data.ApplicationDbContext context)
+        public CreateModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public IActionResult OnGet()
@@ -34,8 +33,8 @@ namespace MyHome.Web.Areas.Admin.Pages.IncomeTypes
                 return Page();
             }
 
-            _context.IncomeTypes.Add(IncomeType);
-            await _context.SaveChangesAsync();
+            _dbContext.IncomeTypes.Add(IncomeType);
+            await _dbContext.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

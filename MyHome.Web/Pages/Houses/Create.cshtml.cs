@@ -13,25 +13,25 @@ namespace MyHome.Web.Pages.Houses
     [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly ApplicationDbContext _DbContext;
+        private readonly ApplicationDbContext _dbContext;
 
         public class InputModel
         {
             [Required]
             [MaxLength(200)]
-            public string Street { get; set; }
+            public string? Street { get; set; }
             
             [Required]
             [MaxLength(10)]
-            public string Number { get; set; }
+            public string? Number { get; set; }
             
             [Required] 
             [MaxLength(10)]
-            public string PostalCode { get; set; }
+            public string? PostalCode { get; set; }
             
             [Required] 
             [MaxLength(200)]
-            public string City { get; set; }
+            public string? City { get; set; }
         }
 
         [BindProperty] 
@@ -39,7 +39,7 @@ namespace MyHome.Web.Pages.Houses
 
         public CreateModel(ApplicationDbContext dbContext)
         {
-            _DbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         public IActionResult OnGet()
@@ -54,18 +54,18 @@ namespace MyHome.Web.Pages.Houses
                 return BadRequest(ModelState);
             }
 
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            var userId = User.GetId();
 
             if (userId is null)
             {
                 return Unauthorized();
             }
 
-            var user = await _DbContext.Users.FindAsync(userId.Value);
+            var user = await _dbContext.Users.FindAsync(userId);
 
             if (user is null)
             {
-                return NotFound("Die Anmeldung ist ung�ltig!");
+                return NotFound("Die Anmeldung ist ungültig!");
             }
 
             if (string.IsNullOrEmpty(user.FamilyId))
@@ -82,8 +82,8 @@ namespace MyHome.Web.Pages.Houses
                 FamilyId = user.FamilyId
             };
 
-            await _DbContext.Houses.AddAsync(house);
-            await _DbContext.SaveChangesAsync();
+            await _dbContext.Houses.AddAsync(house);
+            await _dbContext.SaveChangesAsync();
 
             return Redirect("/");
         }

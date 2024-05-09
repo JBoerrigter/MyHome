@@ -10,11 +10,11 @@ namespace MyHome.Web.Areas.Admin.Pages.MeterReadingTypes
     [Authorize(Roles = "Administrator")]
     public class CreateModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public CreateModel(MyHome.Web.Data.ApplicationDbContext context)
+        public CreateModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public IActionResult OnGet()
@@ -33,8 +33,8 @@ namespace MyHome.Web.Areas.Admin.Pages.MeterReadingTypes
                 return Page();
             }
 
-            _context.MetersReadingTypes.Add(MeterReadingType);
-            await _context.SaveChangesAsync();
+            _dbContext.MetersReadingTypes.Add(MeterReadingType);
+            await _dbContext.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

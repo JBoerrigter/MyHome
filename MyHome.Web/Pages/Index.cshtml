@@ -49,9 +49,9 @@
                     {
                         <div class="list-group-item list-group-item-action">
 
-                            <div class="house-container">
+                            <div class="d-flex align-items-center">
 
-                                <a asp-page="Houses/Details" asp-route-id="@(Model.Family.Houses[i].Id)" class="house-info">
+                                <a asp-page="Houses/Details" asp-route-id="@(Model.Family.Houses[i].Id)" class="list-group-item-text">
                                     <div class="house-street">
                                         <span>@Model.Family.Houses[i].Street</span>
                                         <span>@Model.Family.Houses[i].Number</span>
@@ -62,8 +62,8 @@
                                     </div>
                                 </a>
 
-                                <div class="dropdown house-action">
-                                    <span id="actions@(i)" data-bs-toggle="dropdown" aria-expanded="false" class="house-action-toggle">
+                                <div class="dropdown">
+                                    <span id="actions@(i)" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class='bx bx-dots-vertical-rounded'></i>
                                     </span>
                                     <ul class="dropdown-menu" aria-labelledby="actions@(i)">

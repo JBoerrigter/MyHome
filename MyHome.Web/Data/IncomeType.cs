@@ -10,7 +10,7 @@
 
     public class IncomeType
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
         public IncomeInterval Interval { get; set; }
     }

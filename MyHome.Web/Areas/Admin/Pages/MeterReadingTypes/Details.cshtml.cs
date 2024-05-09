@@ -11,23 +11,23 @@ namespace MyHome.Web.Areas.Admin.Pages.MeterReadingTypes
     [Authorize(Roles = "Administrator")]
     public class DetailsModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public DetailsModel(MyHome.Web.Data.ApplicationDbContext context)
+        public DetailsModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public MeterReadingType MeterReadingType { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string? id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            MeterReadingType = await _context.MetersReadingTypes.FirstOrDefaultAsync(m => m.Id == id);
+            MeterReadingType = await _dbContext.MetersReadingTypes.FirstOrDefaultAsync(m => m.Id == id);
 
             if (MeterReadingType == null)
             {

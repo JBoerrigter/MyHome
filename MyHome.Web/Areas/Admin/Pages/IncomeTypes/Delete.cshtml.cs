@@ -11,24 +11,24 @@ namespace MyHome.Web.Areas.Admin.Pages.IncomeTypes
     [Authorize(Roles = "Administrator")]
     public class DeleteModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public DeleteModel(MyHome.Web.Data.ApplicationDbContext context)
+        public DeleteModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         [BindProperty]
         public IncomeType IncomeType { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string? id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            IncomeType = await _context.IncomeTypes.FirstOrDefaultAsync(m => m.Id == id);
+            IncomeType = await _dbContext.IncomeTypes.FirstOrDefaultAsync(m => m.Id == id);
 
             if (IncomeType == null)
             {
@@ -37,19 +37,19 @@ namespace MyHome.Web.Areas.Admin.Pages.IncomeTypes
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string? id)
+        public async Task<IActionResult> OnPostAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            IncomeType = await _context.IncomeTypes.FindAsync(id);
+            IncomeType = await _dbContext.IncomeTypes.FindAsync(id);
 
             if (IncomeType != null)
             {
-                _context.IncomeTypes.Remove(IncomeType);
-                await _context.SaveChangesAsync();
+                _dbContext.IncomeTypes.Remove(IncomeType);
+                await _dbContext.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");

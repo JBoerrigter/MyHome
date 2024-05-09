@@ -11,24 +11,24 @@ namespace MyHome.Web.Areas.Admin.Pages.MeterReadingTypes
     [Authorize(Roles = "Administrator")]
     public class DeleteModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public DeleteModel(MyHome.Web.Data.ApplicationDbContext context)
+        public DeleteModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         [BindProperty]
         public MeterReadingType MeterReadingType { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string? id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            MeterReadingType = await _context.MetersReadingTypes.FirstOrDefaultAsync(m => m.Id == id);
+            MeterReadingType = await _dbContext.MetersReadingTypes.FirstOrDefaultAsync(m => m.Id == id);
 
             if (MeterReadingType == null)
             {
@@ -37,19 +37,19 @@ namespace MyHome.Web.Areas.Admin.Pages.MeterReadingTypes
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string? id)
+        public async Task<IActionResult> OnPostAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            MeterReadingType = await _context.MetersReadingTypes.FindAsync(id);
+            MeterReadingType = await _dbContext.MetersReadingTypes.FindAsync(id);
 
             if (MeterReadingType != null)
             {
-                _context.MetersReadingTypes.Remove(MeterReadingType);
-                await _context.SaveChangesAsync();
+                _dbContext.MetersReadingTypes.Remove(MeterReadingType);
+                await _dbContext.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");

@@ -10,18 +10,18 @@ namespace MyHome.Web.Areas.Admin.Pages.ExpenseTypes
     [Authorize(Roles = "Administrator")]
     public class IndexModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public IndexModel(MyHome.Web.Data.ApplicationDbContext context)
+        public IndexModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public IList<ExpenseType> ExpenseType { get;set; }
 
         public async Task OnGetAsync()
         {
-            ExpenseType = await _context.ExpenseTypes.ToListAsync();
+            ExpenseType = await _dbContext.ExpenseTypes.ToListAsync();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/Houses/{id}"
 @model DetailsModel
 @{
     ViewData["Title"] = $"Housedetails";
@@ -48,7 +48,7 @@
         <div class="main-header">
             <h1>Meter Readings</h1>
             <div class="main-actions">
-                <a asp-page="/MeterReadings/Create" class="btn btn-success">Add Reading</a>
+                <a asp-page="/MeterReadings/Create" asp-route-houseId="@Model.ViewModel.Id" class="btn btn-success">Add Reading</a>
             </div>
         </div>
         <div class="main-content">
@@ -56,10 +56,34 @@
             <ul class="list-group">
                 @if (Model.ViewModel.MeterReadings.Any())
                 {
-                    foreach (var reading in Model.ViewModel.MeterReadings)
+                    for (int i = 0; i < Model.ViewModel.MeterReadings.Count; i++)
                     {
                         <li class="list-group-item list-group-item-action">
-                            @reading.ReadingType
+
+                            <div class="d-flex align-items-center">
+                                <a asp-page="/MeterReadings/Details" asp-route-houseId="@Model.ViewModel.MeterReadings[i].HouseId" asp-route-id="@Model.ViewModel.MeterReadings[i].Id" class="list-group-item-text">
+                                    <div>
+                                        <p>@Model.ViewModel.MeterReadings[i].ReadingType.Name</p>
+                                        <p>@Model.ViewModel.MeterReadings[i].Year</p>
+                                        <p>@Model.ViewModel.MeterReadings[i].Value</p>
+                                    </div>
+                                </a>
+
+                                <div class="dropdown">
+                                    <span id="actions@(i)" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class='bx bx-dots-vertical-rounded'></i>
+                                    </span>
+                                    <ul class="dropdown-menu" aria-labelledby="actions@(i)">
+                                        <li>
+                                            <a class="dropdown-item" asp-page="/MeterReadings/Delete" asp-route-houseId="@Model.ViewModel.Id" asp-route-id="@Model.ViewModel.MeterReadings[i].Id">
+                                                <i class='bx bx-trash'></i>
+                                                <span>Delete</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
                         </li>
                     }
                 }

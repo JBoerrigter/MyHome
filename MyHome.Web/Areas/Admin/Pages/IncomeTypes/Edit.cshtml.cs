@@ -11,24 +11,24 @@ namespace MyHome.Web.Areas.Admin.Pages.IncomeTypes
     [Authorize(Roles = "Administrator")]
     public class EditModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public EditModel(MyHome.Web.Data.ApplicationDbContext context)
+        public EditModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         [BindProperty]
         public IncomeType IncomeType { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string? id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            IncomeType = await _context.IncomeTypes.FirstOrDefaultAsync(m => m.Id == id);
+            IncomeType = await _dbContext.IncomeTypes.FirstOrDefaultAsync(m => m.Id == id);
 
             if (IncomeType == null)
             {
@@ -46,11 +46,11 @@ namespace MyHome.Web.Areas.Admin.Pages.IncomeTypes
                 return Page();
             }
 
-            _context.Attach(IncomeType).State = EntityState.Modified;
+            _dbContext.Attach(IncomeType).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -69,7 +69,7 @@ namespace MyHome.Web.Areas.Admin.Pages.IncomeTypes
 
         private bool IncomeTypeExists(string id)
         {
-            return _context.IncomeTypes.Any(e => e.Id == id);
+            return _dbContext.IncomeTypes.Any(e => e.Id == id);
         }
     }
 }

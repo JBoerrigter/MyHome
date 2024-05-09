@@ -7,6 +7,7 @@ namespace MyHome.Web.Data.Config
     {
         public void Configure(EntityTypeBuilder<MeterReading> builder)
         {
+            builder.Property(p => p.Id).HasDefaultValue(Guid.NewGuid().ToString());
             builder.Property(p => p.UserId).IsRequired();
             builder.Property(p => p.ReadingTypeId).IsRequired();
             builder.Property(p => p.Year).IsRequired();

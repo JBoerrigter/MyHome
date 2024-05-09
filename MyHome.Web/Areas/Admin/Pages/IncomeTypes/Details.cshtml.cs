@@ -11,23 +11,23 @@ namespace MyHome.Web.Areas.Admin.Pages.IncomeTypes
     [Authorize(Roles = "Administrator")]
     public class DetailsModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public DetailsModel(MyHome.Web.Data.ApplicationDbContext context)
+        public DetailsModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public IncomeType IncomeType { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string? id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            IncomeType = await _context.IncomeTypes.FirstOrDefaultAsync(m => m.Id == id);
+            IncomeType = await _dbContext.IncomeTypes.FirstOrDefaultAsync(m => m.Id == id);
 
             if (IncomeType == null)
             {

@@ -7,6 +7,7 @@ namespace MyHome.Web.Data.Config
     {
         public void Configure(EntityTypeBuilder<Income> builder)
         {
+            builder.Property(p => p.Id).HasDefaultValue(Guid.NewGuid().ToString());
             builder.Property(p => p.UserId).IsRequired();
             builder.Property(p => p.IncomeTypeId).IsRequired();
             builder.Property(p => p.Description).HasMaxLength(200);

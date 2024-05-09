@@ -4,41 +4,46 @@
     ViewData["Title"] = "Setup";
 }
 
-<div id="setup-page">
+<div class="container">
 
-    <section class="welcome mt-3">
+    <div class="row m-3">
         <h2>Welcome to MyHome</h2>
         <p>Here you can setup your Installation of MyHome.</p>
-    </section>
-
-    <div id="setup-actions">
-
-    <section class="mt-3">
-        <h3>1. Create the database</h3>
-        <p>This application stores all data in an SqLite Database. It is essential to create the database in order for this application to work.</p>
-        @if (!Model.IsDatabaseCreated)
-        {
-            <a asp-page-handler="CreateDatabase" class="btn btn-primary">Create a Database</a>
-        }
-        else
-        {
-            <p class="btn btn-secondary">Create a Database</p>
-        }
-    </section>
-
-    <section class="mt-3">
-        <h3>2. Create an Admin Account</h3>
-        <p>To manage everything this app has to offer, there must be an Admin Account. After you created the database you can proceed with creating your admin account.</p>
-        @if (!Model.IsDatabaseCreated)
-        {
-            <p class="btn btn-secondary">Create Admin Account</p>
-        }
-        else
-        {
-            <a asp-area="Setup" asp-page="CreateAdminAccount" class="btn btn-primary">Create Admin Account</a>
-        }
-    </section>
-
     </div>
 
+    <div class="row m-3">
+        <div class="col">
+            <h3>1. Create the database</h3>
+            <p>This application stores all data in an SqLite Database. It is essential to create the database in order for this application to work.</p>
+        </div>
+
+        <div class="col">
+            <h3>2. Create an Admin Account</h3>
+            <p>To manage everything this app has to offer, there must be an Admin Account. After you created the database you can proceed with creating your admin account.</p>
+        </div>
+    </div>
+
+    <div class="row m-3">
+        <div class="col">
+            @if (!Model.IsDatabaseCreated)
+            {
+                <a asp-page-handler="CreateDatabase" class="btn btn-primary">Create a Database</a>
+            }
+            else
+            {
+                <p class="btn btn-secondary">Create a Database</p>
+            }
+        </div>
+
+        <div class="col">
+                @if (!Model.IsDatabaseCreated)
+                {
+                    <p class="btn btn-secondary">Create Admin Account</p>
+                }
+                else
+                {
+                    <a asp-area="Setup" asp-page="Register" class="btn btn-primary">Create Admin Account</a>
+                }
+        </div>
+    </div>
 </div>

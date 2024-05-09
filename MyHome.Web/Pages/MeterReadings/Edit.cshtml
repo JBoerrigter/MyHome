@@ -1,4 +1,4 @@
-﻿@*@page*@
+﻿@page "/Houses/{houseId}/MeterReadings/Edit"
 @model EditModel
 
 @{
@@ -57,7 +57,7 @@
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="/Houses/Details" asp-route-id="@Model.HouseId">Back</a>
 </div>
 
 @section Scripts {

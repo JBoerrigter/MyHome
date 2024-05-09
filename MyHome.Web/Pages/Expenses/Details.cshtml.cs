@@ -11,11 +11,11 @@ namespace MyHome.Web.Pages.Expenses
     [Authorize]
     public class DetailsModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public DetailsModel(MyHome.Web.Data.ApplicationDbContext context)
+        public DetailsModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public Expense Expense { get; set; }
@@ -27,7 +27,7 @@ namespace MyHome.Web.Pages.Expenses
                 return NotFound();
             }
 
-            Expense = await _context.Expenses
+            Expense = await _dbContext.Expenses
                 .Include(e => e.ExpenseType)
                 .Include(e => e.User).FirstOrDefaultAsync(m => m.Id == id);
 

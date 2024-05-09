@@ -14,6 +14,8 @@ namespace MyHome.Web.Pages.Houses
     {
         public class DetailsViewModel
         {
+            public string? Id { get; set; }
+
             [DisplayName("Straße")]
             public string? Street { get; set; }
 
@@ -29,13 +31,13 @@ namespace MyHome.Web.Pages.Houses
             public List<MeterReading>? MeterReadings { get; set; }
         }
 
-        private readonly ApplicationDbContext _DbContext;
+        private readonly ApplicationDbContext _dbContext;
 
         public DetailsViewModel ViewModel { get; set; }
 
         public DetailsModel(ApplicationDbContext dbContext)
         {
-            _DbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         public async Task<IActionResult> OnGet(string? id)
@@ -52,15 +54,16 @@ namespace MyHome.Web.Pages.Houses
                 return Unauthorized();
             }
 
-            var user = await _DbContext.Users.FindAsync(userId);
+            var user = await _dbContext.Users.FindAsync(userId);
 
             if (user is null)
             {
                 return NotFound("Die Anmeldung ist ungültig!");
             }
 
-            var house = await _DbContext.Houses
+            var house = await _dbContext.Houses
                 .Include(h => h.MeterReadings)
+                .ThenInclude(r => r.ReadingType)
                 .FirstOrDefaultAsync(h => h.Id == id);
 
             if (house == null)
@@ -75,6 +78,7 @@ namespace MyHome.Web.Pages.Houses
 
             ViewModel = new DetailsViewModel
             {
+                Id = house.Id,
                 Street = house.Street,
                 City = house.City,
                 Number = house.Number,

@@ -1,48 +1,52 @@
-﻿@page
+﻿@page "/Houses/{houseId}/MeterReadings/Delete"
 @model DeleteModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = $"Meter Reading - {Model.MeterReading.ReadingType.Name} {Model.MeterReading.Year}";
 }
 
-<h1>Delete</h1>
+<div class="main-container">
+    <div class="main-header">
+        <h1>@ViewData["Title"]</h1>
+        <div class="main-actions"></div>
+    </div>
+    <div class="main-content">
+        <h3>Are you sure you want to delete this?</h3>
+        <div>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">Erstellt</dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.MeterReading.Created)
+                </dd>
+                <dt class="col-sm-2">Jahr</dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.MeterReading.Year)
+                </dd>
+                <dt class="col-sm-2">Wert</dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.MeterReading.Value)
+                </dd>
+                @if (!string.IsNullOrEmpty(Model.MeterReading.Description))
+                {
+                    <dt class="col-sm-2">Bemerkung</dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.MeterReading.Description)
+                    </dd>
+                }
+                @if (!string.IsNullOrEmpty(Model.Base64Image))
+                {
+                    <dt class="col-sm-2">Image</dt>
+                    <dd class="col-sm-10 col-md-6 col-lg-4">
+                        <img class="img-thumbnail" src="@Model.Base64Image" />
+                    </dd>
+                }
+            </dl>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>MeterReading</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Erstellt</dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MeterReading.Created)
-        </dd>
-        <dt class="col-sm-2">Jahr</dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MeterReading.Year)
-        </dd>
-        <dt class="col-sm-2">Wert</dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MeterReading.Value)
-        </dd>
-        @if (!string.IsNullOrEmpty(Model.MeterReading.Description))
-        {
-            <dt class="col-sm-2">Bemerkung</dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.MeterReading.Description)
-            </dd>
-        }
-        @if (!string.IsNullOrEmpty(Model.Base64Image))
-        {
-            <dt class="col-sm-2">Image</dt>
-            <dd class="col-sm-10 col-md-6 col-lg-4">
-                <img class="img-thumbnail" src="@Model.Base64Image" />
-            </dd>
-        }
-    </dl>
-    
-    <form method="post">
-        <input type="hidden" asp-for="MeterReading.Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="./Index">Back to List</a>
-    </form>
+            <form method="post">
+                <input type="hidden" asp-for="MeterReading.Id" />
+                <input type="submit" value="Delete" class="btn btn-danger" /> |
+                <a asp-page="/Houses/Details" asp-route-id="@Model.HouseId">Back</a>
+            </form>
+    </div>
 </div>

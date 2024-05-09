@@ -1,7 +1,7 @@
 ﻿@{
     const string Splitter = "/";
 
-    string[] parts = Context.Request.Path.Value                             // Current Path
+    string[] parts = Context.Request.Path.Value!                            // Current Path
         .Split(Splitter)                                                    // Split by "/"
         .Where(p => !string.IsNullOrEmpty(p))                               // First Entry is empty
         .ToArray();                                                         // Because we look with "for"

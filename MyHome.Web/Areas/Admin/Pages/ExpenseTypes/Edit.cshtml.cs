@@ -11,24 +11,24 @@ namespace MyHome.Web.Areas.Admin.Pages.ExpenseTypes
     [Authorize(Roles = "Administrator")]
     public class EditModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public EditModel(MyHome.Web.Data.ApplicationDbContext context)
+        public EditModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         [BindProperty]
         public ExpenseType ExpenseType { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string? id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            ExpenseType = await _context.ExpenseTypes.FirstOrDefaultAsync(m => m.Id == id);
+            ExpenseType = await _dbContext.ExpenseTypes.FirstOrDefaultAsync(m => m.Id == id);
 
             if (ExpenseType == null)
             {
@@ -46,11 +46,11 @@ namespace MyHome.Web.Areas.Admin.Pages.ExpenseTypes
                 return Page();
             }
 
-            _context.Attach(ExpenseType).State = EntityState.Modified;
+            _dbContext.Attach(ExpenseType).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -69,7 +69,7 @@ namespace MyHome.Web.Areas.Admin.Pages.ExpenseTypes
 
         private bool ExpenseTypeExists(string id)
         {
-            return _context.ExpenseTypes.Any(e => e.Id == id);
+            return _dbContext.ExpenseTypes.Any(e => e.Id == id);
         }
     }
 }

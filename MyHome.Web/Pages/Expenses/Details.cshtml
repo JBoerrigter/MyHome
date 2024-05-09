@@ -39,13 +39,13 @@
             @Html.DisplayNameFor(model => model.Expense.User)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Expense.User.Id)
+            @Html.DisplayFor(model => model.Expense.User!.Id)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Expense.ExpenseType)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Expense.ExpenseType.Id)
+            @Html.DisplayFor(model => model.Expense.ExpenseType!.Id)
         </dd>
     </dl>
 </div>

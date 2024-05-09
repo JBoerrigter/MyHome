@@ -11,23 +11,23 @@ namespace MyHome.Web.Areas.Admin.Pages.ExpenseTypes
     [Authorize(Roles = "Administrator")]
     public class DetailsModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public DetailsModel(MyHome.Web.Data.ApplicationDbContext context)
+        public DetailsModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public ExpenseType ExpenseType { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string? id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            ExpenseType = await _context.ExpenseTypes.FirstOrDefaultAsync(m => m.Id == id);
+            ExpenseType = await _dbContext.ExpenseTypes.FirstOrDefaultAsync(m => m.Id == id);
 
             if (ExpenseType == null)
             {

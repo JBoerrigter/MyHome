@@ -11,24 +11,24 @@ namespace MyHome.Web.Areas.Admin.Pages.MeterReadingTypes
     [Authorize(Roles = "Administrator")]
     public class EditModel : PageModel
     {
-        private readonly MyHome.Web.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public EditModel(MyHome.Web.Data.ApplicationDbContext context)
+        public EditModel(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         [BindProperty]
         public MeterReadingType MeterReadingType { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string? id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            MeterReadingType = await _context.MetersReadingTypes.FirstOrDefaultAsync(m => m.Id == id);
+            MeterReadingType = await _dbContext.MetersReadingTypes.FirstOrDefaultAsync(m => m.Id == id);
 
             if (MeterReadingType == null)
             {
@@ -46,11 +46,11 @@ namespace MyHome.Web.Areas.Admin.Pages.MeterReadingTypes
                 return Page();
             }
 
-            _context.Attach(MeterReadingType).State = EntityState.Modified;
+            _dbContext.Attach(MeterReadingType).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -69,7 +69,7 @@ namespace MyHome.Web.Areas.Admin.Pages.MeterReadingTypes
 
         private bool MeterReadingTypeExists(string id)
         {
-            return _context.MetersReadingTypes.Any(e => e.Id == id);
+            return _dbContext.MetersReadingTypes.Any(e => e.Id == id);
         }
     }
 }

@@ -13,6 +13,9 @@ namespace MyHome.Web.Pages.MeterReadings
     {
         private readonly ApplicationDbContext _context;
 
+        [BindProperty(SupportsGet = true)]
+        public string HouseId { get; set; }
+
         public DetailsModel(ApplicationDbContext context)
         {
             _context = context;
