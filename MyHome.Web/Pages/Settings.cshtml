@@ -10,14 +10,26 @@
         <h1>@ViewData["Title"]</h1>
         <div class="main-actions"></div>
     </div>
+
     <div class="main-content">
-
-        <div class="form-group">
-            <label for="mode" class="form-label">Mode</label>
-            <input type="checkbox" name="mode" />
-        </div>
-
+        <section>
+            <form method="post" id="settings-form">
+                <div class="row mb-3">
+                    <div class="form-check">
+                        <label for="darkmode" class="form-check-label">Dark Mode</label>
+                        <input type="checkbox" name="darkmode" id="darkmode" value="true" class="form-check-input" @(Model.IsDarkMode ? "checked" : "") />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success">Speichern</button>
+            </form>
+        </section>
     </div>
 </div>
 
 <partial name="_AdminNavigationPartial" />
+
+<script>
+    document.getElementById('darkmode').addEventListener('change', function () {
+        document.body.classList.toggle('dark-mode', this.checked);
+    });
+</script>
