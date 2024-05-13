@@ -36,6 +36,7 @@ namespace MyHome
             var user = await _Context.Users
                 .Include(u => u.Family)
                 .Include(u => u.Family.Houses)
+                .Include(u => u.Family.Members)
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             Username = user?.UserName;

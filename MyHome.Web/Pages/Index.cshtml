@@ -2,29 +2,28 @@
 @model IndexModel
 @using System.Security.Claims
 @{
-    @if (Model.Family is null)
+    ViewData["Title"] = "Dashboard";
+
+    @if (Model.Family is not null)
     {
-        ViewData["Title"] = "Dashboard";
-    }
-    else
-    {
-        ViewData["Title"] = Model.Family.Name + " - Häuser";
+        ViewData["Heading_Houses"] = Model.Family.Name + " - Häuser";
+        ViewData["Heading_Members"] = Model.Family.Name + " - Mitglieder";
     }
 }
 
-<div class="main-container">
-    <div class="main-header">
-        <h1>@ViewData["Title"]</h1>
-        <div class="main-actions">
-            @if (Model.Family is not null)
-            {
-                <a asp-page="/Houses/Create" class="btn btn-success">Add House</a>
-            }
+@if (Model.Family is null)
+{
+    <div class="main-container">
+        <div class="main-header">
+            <h1>@ViewData["Heading_Houses"]</h1>
+            <div class="main-actions">
+                @if (Model.Family is not null)
+                {
+                    <a asp-page="/Houses/Create" class="btn btn-success">Add House</a>
+                }
+            </div>
         </div>
-    </div>
-    <div class="main-content">
-        @if (Model.Family is null)
-        {
+        <div class="main-content">
             <section>
 
                 <div class="alert alert-info" role="alert">
@@ -40,9 +39,19 @@
                 </div>
 
             </section>
-        }
-        else
-        {
+        </div>
+    </div>
+}
+else
+{
+    <div class="main-container">
+        <div class="main-header">
+            <h1>@ViewData["Heading_Houses"]</h1>
+            <div class="main-actions">
+                <a asp-page="/Houses/Create" class="btn btn-success">Add House</a>
+            </div>
+        </div>
+        <div class="main-content">
             <section class="houses">
                 <div class="list-group">
                     @for (int i = 0; i < Model.Family.Houses.Count; i++)
@@ -86,6 +95,31 @@
                     }
                 </div>
             </section>
-        }
+        </div>
     </div>
-</div>
+
+    <div class="main-container mt-3">
+        <div class="main-header">
+            <h1>@ViewData["Heading_Members"]</h1>
+            <div class="main-actions">
+                <a asp-page="/Members/Invite" class="btn btn-success">Invite someone</a>
+            </div>
+        </div>
+        <div class="main-content">
+            <section class="members">
+                <div class="list-group">
+                    @for (int i = 0; i < Model.Family.Members.Count; i++)
+                    {
+                        <div class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <p class="list-group-item-text">
+                                    @Model.Family.Members[i].UserName
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </section>
+        </div>
+    </div>
+}
