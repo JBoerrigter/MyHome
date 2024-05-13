@@ -26,11 +26,10 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-app.UseExceptionHandler("/Error");
-
 if (app.Environment.IsProduction())
 {
     app.UseHsts();
+    app.UseExceptionHandler("/Error");
 }
 
 if (app.Environment.IsDevelopment())
