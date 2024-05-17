@@ -7,7 +7,6 @@ namespace MyHome.Web.Data.Config
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
-            builder.Property(p => p.Id).HasDefaultValue(Guid.NewGuid().ToString());
             builder.HasOne<Family>().WithMany(p => p.Members);
         }
     }

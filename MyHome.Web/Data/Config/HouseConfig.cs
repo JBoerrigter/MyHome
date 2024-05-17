@@ -7,7 +7,6 @@ namespace MyHome.Web.Data.Config
     {
         public void Configure(EntityTypeBuilder<House> builder)
         {
-            builder.Property(p => p.Id).HasDefaultValue(Guid.NewGuid().ToString());
             builder.Property(p => p.FamilyId).IsRequired();
             builder.Property(p => p.Street).IsRequired().HasMaxLength(200);
             builder.Property(p => p.Number).IsRequired().HasMaxLength(10);

@@ -7,7 +7,6 @@ namespace MyHome.Web.Data.Config
     {
         public void Configure(EntityTypeBuilder<MeterReadingType> builder)
         {
-            builder.Property(p => p.Id).HasDefaultValue(Guid.NewGuid().ToString());
             builder.Property(p => p.Name).IsRequired().HasMaxLength(50);
             builder.Property(p => p.Unit).IsRequired().HasMaxLength(10);
         }
