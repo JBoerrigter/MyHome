@@ -11,6 +11,7 @@ namespace MyHome.Web.Pages.MeterReadings
     [Authorize]
     public class DeleteModel : PageModel
     {
+        private readonly ILogger<DeleteModel> _logger;
         private readonly MyHome.Web.Data.ApplicationDbContext _context;
 
         [BindProperty(SupportsGet = true)]
@@ -19,8 +20,9 @@ namespace MyHome.Web.Pages.MeterReadings
         [BindProperty] public MeterReading MeterReading { get; set; }
         public string Base64Image { get; set; }
 
-        public DeleteModel(MyHome.Web.Data.ApplicationDbContext context)
+        public DeleteModel(ILogger<DeleteModel> logger, ApplicationDbContext context)
         {
+            this._logger = logger;
             _context = context;
         }
 
@@ -62,6 +64,9 @@ namespace MyHome.Web.Pages.MeterReadings
             {
                 _context.MetersReadings.Remove(MeterReading);
                 await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Reading {Meters Reading} deleted by {User}.", 
+                    id, MeterReading.HouseId, MeterReading.Year, User.GetId());
             }
 
             return Redirect($"/Houses/{HouseId}");

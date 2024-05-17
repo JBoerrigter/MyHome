@@ -28,12 +28,14 @@ namespace MyHome.Web.Pages.Houses
             public string? City { get; set; }
         }
 
+        private readonly ILogger<DeleteModel> _logger;
         private readonly ApplicationDbContext _dbContext;
 
         public DeleteViewModel ViewModel { get; set; }
 
-        public DeleteModel(ApplicationDbContext dbContext)
+        public DeleteModel(ILogger<DeleteModel> logger, ApplicationDbContext dbContext)
         {
+            _logger = logger;
             _dbContext = dbContext;
         }
 
@@ -94,6 +96,8 @@ namespace MyHome.Web.Pages.Houses
             {
                 _dbContext.Houses.Remove(house);
                 await _dbContext.SaveChangesAsync();
+
+                _logger.LogInformation("House {House} deleted by {User}", id, User.GetId());
             }
 
             return Redirect("/");

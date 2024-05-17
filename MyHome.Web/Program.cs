@@ -2,13 +2,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using MyHome.Web.Data;
+using Serilog;
+using Serilog.Sinks.Graylog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("Sqlite");
-
 builder.Services
-    .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString))
+    .AddDbContext<ApplicationDbContext>(options => options
+    .UseSqlite(builder.Configuration.GetConnectionString("Sqlite")))
     .AddIdentity<ApplicationUser, IdentityRole>(options => {
         options.Password.RequireDigit = false;
         options.Password.RequireUppercase = false;
@@ -23,6 +24,18 @@ builder.Services
     .AddDefaultTokenProviders();
 
 builder.Services.AddRazorPages();
+
+// Serilog
+builder.Host.UseSerilog((context, services, configuration) => {
+    configuration.WriteTo.Graylog(new GraylogSinkOptions
+    {
+        HostnameOrAddress = builder.Configuration["Graylog:HostnameOrAddress"],
+        Port = Convert.ToInt32(builder.Configuration["Graylog:Port"]),
+        TransportType = Serilog.Sinks.Graylog.Core.Transport.TransportType.Tcp,
+        Facility = AppDomain.CurrentDomain.FriendlyName,
+        MinimumLogEventLevel = Serilog.Events.LogEventLevel.Information
+    }).Enrich.FromLogContext();
+});
 
 var app = builder.Build();
 
