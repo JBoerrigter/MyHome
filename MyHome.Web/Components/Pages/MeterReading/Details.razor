@@ -1,0 +1,80 @@
+﻿@page "/houses/{houseId}/meter-readings/{id}"
+@attribute [Authorize]
+@rendermode RenderMode.InteractiveServer
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
+@inject IFamilyService familyService
+@inject IHouseService houseService
+@inject IMeterReadingService meterReadingService
+
+<div class="page">
+    <header>
+        <h1>@_family.Name</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Details</h2>
+            <div class="card p-4">
+                <div class="row">
+                    <div class="col-sm-12 col-md-4">
+                        <span class="label" for="type">Type</span>
+                        <p class="form-control" id="type">@_meterReading.ReadingType.Name</p>
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+                        <span class="label" for="year">Year</span>
+                        <p class="form-control" id="year">@_meterReading.Year</p>
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+                        <span class="label" for="value">Value</span>
+                        <p class="form-control" id="value">@_meterReading.Value</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Actions</h2>
+            <button class="btn btn-danger" popovertarget="@PopoverDelete">Delete Meterreading</button>
+            <div popover id="@PopoverDelete" class="custom-popover">
+                <div class="dialog">
+                    <h2>Do you really want to delete this meter reading?</h2>
+                    <p>Keep in mind, that this action can not be reversed.</p>
+                    <button class="btn btn-danger mt-3" @onclick="DeleteAsync">Delete</button>
+                    <button class="btn btn-primary mt-3" @onclick="CloseAsync">Cancel</button>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+@code {
+    const string PopoverDelete = "popover-meter-reading-delete";
+
+    Data.House? _house;
+    Data.Family? _family;
+    Data.MeterReading _meterReading;
+
+    [Parameter] public string? HouseId { get; set; }
+    [Parameter] public string? Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _house = await houseService.GetHouseAsync(HouseId);
+        if (_house is null) return;
+        _family = await familyService.GetFamily(_house.FamilyId);
+        if (_family is null) return;
+        _meterReading = await meterReadingService.GetMeterReadingAsync(Id);
+    }
+
+    private async Task DeleteAsync()
+    {
+        await meterReadingService.DeleteMeterReadingAsync(Id);
+        navigationManager.NavigateTo($"/houses/{HouseId}");
+    }
+
+    private async Task CloseAsync()
+    {
+        await jsRuntime.InvokeVoidAsync("HidePopover", PopoverDelete);
+    }
+}

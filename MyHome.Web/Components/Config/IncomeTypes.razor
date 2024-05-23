@@ -1,0 +1,98 @@
+﻿@page "/configurations/income-types"
+@rendermode RenderMode.InteractiveServer
+@inject IIncomeService incomeService
+
+<div class="page">
+    <header>
+        <h1>Income Types</h1>
+    </header>
+    <main>
+        <div class="row">
+            <div class="col-10">
+                <button class="btn btn-primary" popovertarget="popover-income-types-create">Add Income Type</button>
+            </div>
+            <div class="col-2 d-flex">
+                <input type="search" class="form-control" placeholder="Search income types" @bind-value="_search" @onkeydown="SearchKeyDownAsync" />
+                <button class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div popover id="popover-income-types-create" class="custom-popover">
+            <div class="dialog">
+                <h3>New Income Type</h3>
+                <EditForm Model="@Model" FormName="IncomeTypeCreate" OnValidSubmit="CreateAsync">
+                    <DataAnnotationsValidator />
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="name" class="form-label">Name</label>
+                            <InputText class="form-control" id="name" @bind-Value="Model!.Name" />
+                            <ValidationMessage For="@(() => Model.Name)" />
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success mt-3">Create</button>
+                    <button class="btn btn-danger mt-3">Cancel</button>
+                </EditForm>
+            </div>
+        </div>
+        <QuickGrid @ref="_grid" Items="@_filteredIncomeTypes" Class="mt-3">
+            <PropertyColumn Property="@(p => p.Name)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Interval)" Sortable="true" />
+            <TemplateColumn>
+                <button class="btn btn-danger" @onclick="() => DeleteAsync(context.Id)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                    </svg>
+                </button>
+            </TemplateColumn>
+        </QuickGrid>
+    </main>
+</div>
+
+@code {
+
+    string? _search;
+    QuickGrid<IncomeType>? _grid;
+    IQueryable<IncomeType>? _incomeTypes;
+    IQueryable<IncomeType>? _filteredIncomeTypes
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(_search)) return _incomeTypes;
+            return _incomeTypes.Where(i => i.Name.ToLower().Contains(_search.ToLower()));
+        }    
+    } 
+
+    [SupplyParameterFromForm] public IncomeTypeViewModel? Model { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        Model ??= new();
+        _incomeTypes = incomeService.GetIncomeTypesQueryable();
+    }
+
+    private async Task CreateAsync()
+    {
+        await incomeService.CreateIncomeTypeAsync(Model);
+        await _grid!.RefreshDataAsync();
+    }
+
+    private async Task DeleteAsync(string id)
+    {
+        await incomeService.DeleteIncomeTypeAsync(id);
+        await _grid!.RefreshDataAsync();
+    }
+
+    private async Task SearchKeyDownAsync(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+        {
+            await _grid!.RefreshDataAsync();
+        }
+    }
+}

@@ -20,12 +20,12 @@ h1, h2, h3, h4, h5, h6, p, a, span {
 :root {
     /* ===== Colors ===== */
     --body-color: #F5F5F5;
+    --body-color: #F9FBFC;
     --sidebar-color: #FFF;
     --primary-color: #695CFE;
     --primary-color-light: #F6F5FF;
     --toggle-color: #DDD;
     --text-color: #707070;
-
     /* ====== Transition ====== */
     --tran-03: all 0.2s ease;
     --tran-03: all 0.3s ease;

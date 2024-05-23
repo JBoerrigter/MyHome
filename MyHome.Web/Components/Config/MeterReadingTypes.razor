@@ -1,0 +1,92 @@
+﻿@page "/configurations/meter-reading-types"
+@rendermode RenderMode.InteractiveServer
+@inject IMeterReadingService meterReadingService
+
+<div class="page">
+    <header>
+        <h1>Meter Reading Types</h1>
+        <p>Here are all available Meter Reading Types for the whole system.</p>
+    </header>
+    <main>
+        <QuickGrid @ref="grid" Items="@_meterReadingTypes">
+            <PropertyColumn Property="@(p => p.Name)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Unit)" Sortable="true" />
+            <TemplateColumn>
+                <button class="btn btn-danger" @onclick="() => DeleteAsync(context.Id)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                    </svg>
+                </button>
+            </TemplateColumn>
+        </QuickGrid>
+
+        <PopoverCard @ref="popoverCard" Target="popover-meter-reading-type-create" CssClass="mt-3">
+            <Image>
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="card-new" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg>
+            </Image>
+            <ChildContent>
+                <h2>Create</h2>
+                <p class="hint">Add a new meter reading type. These types are available in the whole system.</p>
+            </ChildContent>
+            <Popover>
+                <h1>New Meter Reading Type</h1>
+                <p>You can add a new type to the system.</p>
+                <EditForm Model="Model" FormName="MeterReadingTypeCreate" OnValidSubmit="CreateAsync">
+                    <DataAnnotationsValidator />
+                    <div class="row">
+                        <label for="name" class="form-label">Name</label>
+                        <InputText class="form-control" id="name" @bind-Value="Model!.Name" />
+                        <ValidationMessage For="() => Model.Name" />
+                    </div>
+
+                    <div class="row">
+                        <label for="unit" class="form-label">Unit</label>
+                        <InputText class="form-control" id="unit" @bind-Value="Model.Unit" />
+                        <ValidationMessage For="() => Model.Unit" />
+                    </div>
+
+                    <button class="btn btn-success mt-3" type="submit">Create</button>
+                    <button class="btn btn-danger mt-3" type="button" @onclick="CancelAsync">Cancel</button>
+                </EditForm>
+            </Popover>
+        </PopoverCard>
+    </main>
+</div>
+
+@code {
+
+    PopoverCard? popoverCard;
+    QuickGrid<MeterReadingType>? grid;
+    IQueryable<MeterReadingType>? _meterReadingTypes;
+
+    [SupplyParameterFromForm] public MeterReadingTypeViewModel? Model { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Model ??= new();
+        _meterReadingTypes = meterReadingService.GetTypesQueryable();
+    }
+
+    public async Task CreateAsync()
+    {
+        var type = await meterReadingService.CreateTypeAsync(Model);
+        await popoverCard!.CloseAsync();
+        await grid!.RefreshDataAsync();
+        Model = new();
+    }
+
+    public async Task CancelAsync()
+    {
+        await popoverCard!.CloseAsync();
+        Model = new();
+    }
+
+    public async Task DeleteAsync(string id)
+    {
+        await meterReadingService.DeleteTypeAsync(id);
+        await grid!.RefreshDataAsync();
+    }
+}

@@ -1,0 +1,37 @@
+﻿@implements IAsyncDisposable
+@inject IJSRuntime jsRuntime
+
+<button popovertarget="@Target" class="card @(CssClass)">
+    <div class="card-image-bg">
+        @Image
+    </div>
+    <div class="card-content">
+        @ChildContent
+    </div>
+</button>
+
+<div popover id="@Target" class="custom-popover">
+    <div class="dialog">
+        @Popover
+    </div>
+</div>
+
+@code {
+
+    [Parameter] public string? Target { get; set; }
+    [Parameter] public string? CssClass { get; set; }
+    [Parameter] public RenderFragment? Image { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? Popover { get; set; }
+
+    public async Task CloseAsync()
+    {
+        await jsRuntime.InvokeVoidAsync("HidePopover", Target);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await CloseAsync();
+    }
+
+}

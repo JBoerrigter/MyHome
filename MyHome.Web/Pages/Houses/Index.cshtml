@@ -1,0 +1,37 @@
+﻿@page
+@model MyHome.Web.Pages.Houses.IndexModel
+@{
+    ViewData["Title"] = "Houses";
+}
+
+<div class="page">
+    <header>
+        <h1>@Model.Family.Name</h1>
+    </header>
+    <main>
+        <a asp-route="./Details" asp-route-id="d16056d6-02d6-4def-b878-1f330ec7140a">House</a>
+        @foreach (var house in Model.Family.Houses)
+        {
+            <a asp-page="/Houses" asp-route-id="@house.Id" class="actioncard">
+                <div class="actioncard-image-bg">
+                    <img src="#" />
+                </div>
+                <div class="actioncard-content">
+                    <span class="label">Street</span>
+                    <p>@house.Street</p>
+                    <span class="label">City</span>
+                    <p>@house.City</p>
+                </div>
+            </a>
+        }
+        <a href="#" class="actioncard actioncard-new">
+            <div class="actioncard-image-bg">
+                <i class='bx bx-plus'></i>
+            </div>
+            <div class="actioncard-content">
+                <h2>Create</h2>
+                <p class="hint">Add a new house to the family to manage meter readings, incomes, expenses and more.</p>
+            </div>
+        </a>
+    </main>
+</div>

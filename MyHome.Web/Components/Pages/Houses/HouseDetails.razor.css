@@ -1,0 +1,18 @@
+﻿section {
+    margin-bottom: 2rem;
+}
+
+h2 {
+    color: var(--text-color);
+    font-size: 1.5rem;
+}
+
+.horizontal-list {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+p {
+    margin: 0;
+}

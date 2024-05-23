@@ -1,0 +1,112 @@
+﻿@rendermode RenderMode.InteractiveServer
+@inject IJSRuntime jsRuntime
+@inject IMeterReadingService meterReadingService
+
+<PopoverCard Target="@PopoverMeterReading" CssClass="card-new">
+    <Image>
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="card-new" viewBox="0 0 16 16">
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+        </svg>
+    </Image>
+    <ChildContent>
+        <h2>Create</h2>
+        <p class="hint">Record a new meter reading</p>
+    </ChildContent>
+    <Popover>
+        <h2>New Meterreading</h2>
+        <p>You can record various readings like energy or gas</p>
+        <EditForm Model="MeterReadingViewModel" OnValidSubmit="CreateMeterReadingAsync" FormName="CreateMeterreading">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="row mt-3 mb-3">
+                <div class="col-12">
+                    <label class="form-label" for="meter-reading-type">Type</label>
+                    <InputSelect class="form-control" id="meter-reading-type" @bind-Value="MeterReadingViewModel.MeterReadingTypeId">
+                        <option value="">Select an option</option>
+                        @if (_meterReadingTypes is not null)
+                        {
+                            foreach (var meterReadingType in _meterReadingTypes)
+                            {
+                                <option value="@meterReadingType.Id">@meterReadingType.Name</option>
+                            }
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="(() => MeterReadingViewModel.MeterReadingTypeId)"></ValidationMessage>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-12 col-md-6">
+                    <label class="form-label" for="year">Year</label>
+                    <InputNumber class="form-control" id="year" @bind-Value="MeterReadingViewModel!.Year" />
+                    <ValidationMessage For="(() => MeterReadingViewModel.Year)" />
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <label class="form-label" for="value">Value</label>
+                    <InputNumber class="form-control" id="value" @bind-Value="MeterReadingViewModel!.Value" />
+                    <ValidationMessage For="(() => MeterReadingViewModel.Value)" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label class="form-label" for="description">Description</label>
+                    <InputTextArea class="form-control" id="description" @bind-Value="MeterReadingViewModel.Description" />
+                    <ValidationMessage For="(() => MeterReadingViewModel.Description)" />
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success mt-3">Create</button>
+            <button type="button" class="btn btn-danger mt-3" @onclick="CancelAsync">Cancel</button>
+        </EditForm>
+    </Popover>
+</PopoverCard>
+
+@code {
+
+    const string PopoverMeterReading = "popover-meter-reading-create";
+
+    IEnumerable<Data.MeterReadingType>? _meterReadingTypes;
+
+    [SupplyParameterFromForm]
+    public MeterReadingViewModel? MeterReadingViewModel { get; set; }
+
+    [Parameter] public string? UserId { get; set; }
+    [Parameter] public string? HouseId { get; set; }
+    [Parameter] public EventCallback<MeterReading> Created { get; set; }
+
+    protected override void OnInitialized()
+    {
+        MeterReadingViewModel ??= new();
+        MeterReadingViewModel.UserId = this.UserId;
+        MeterReadingViewModel.HouseId = this.HouseId;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _meterReadingTypes = await meterReadingService.GetTypesAsync();
+
+    }
+
+    private async Task CreateMeterReadingAsync()
+    {
+        var reading = await meterReadingService.CreateMeterReadingAsync(MeterReadingViewModel);
+
+        if (reading is not null)
+        {
+            if (Created.HasDelegate)
+            {
+                await Created.InvokeAsync();
+            }
+
+            await CancelAsync();
+            MeterReadingViewModel = new();
+            MeterReadingViewModel.UserId = this.UserId;
+            MeterReadingViewModel.HouseId = this.HouseId;
+        }
+    }
+
+    private async Task CancelAsync()
+    {
+        await jsRuntime.InvokeVoidAsync("HidePopover", PopoverMeterReading);
+    }
+}

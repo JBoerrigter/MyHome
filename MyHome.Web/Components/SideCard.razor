@@ -1,0 +1,17 @@
+﻿<a href="@Href" class="card @CssClass">
+    <div class="card-image-bg">
+        <i class='bx @Icon'></i>
+    </div>
+    <div class="card-content">
+        @ChildContent
+    </div>
+</a>
+
+@code {
+
+    [Parameter] public string? Icon { get; set; }
+    [Parameter] public string? Href { get; set; }
+    [Parameter] public string? CssClass { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+}

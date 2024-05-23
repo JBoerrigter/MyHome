@@ -1,0 +1,11 @@
+﻿<div class="counter">
+    <p class="Number">@(Value.HasValue ? Value : 0)</p>
+    <p class="Label">@Label</p>
+</div>
+
+@code {
+
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public int? Value { get; set; }
+
+}

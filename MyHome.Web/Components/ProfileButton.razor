@@ -1,0 +1,30 @@
+﻿@using System.Security.Claims
+
+<AuthorizeView>
+    <Authorized>
+        <a href="/Account/Manage" class="circle" style="background-color: @GetRandomColor(context.User)">
+            <p>@GetFirstLetterOfName(context.User)</p>
+        </a>
+    </Authorized>
+    <NotAuthorized>
+        <a href="#">Login</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+
+    private string GetFirstLetterOfName(ClaimsPrincipal principal)
+    {
+        return principal.Claims
+            .FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value?
+            .Substring(0, 1).ToUpper() ?? "";
+    }
+
+    private string GetRandomColor(ClaimsPrincipal principal)
+    {
+        Random r = new Random(principal.GetId().GetHashCode());
+        return $"rgb({r.Next(64, 192)},{r.Next(64, 192)},{r.Next(64, 192)})";
+    }
+
+}

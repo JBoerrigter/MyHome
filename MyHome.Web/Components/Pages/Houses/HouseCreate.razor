@@ -1,0 +1,83 @@
+﻿@rendermode RenderMode.InteractiveServer
+@inject IHouseService houseService
+
+<PopoverCard @ref="popoverCard" Target="@popoverCreate" CssClass="card-new">
+    <Image>
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="card-new" viewBox="0 0 16 16">
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+        </svg>
+    </Image>
+    <ChildContent>
+        <h2>Create</h2>
+        <p class="hint">Add a new house to the family to manage meter readings, incomes, expenses and more.</p>
+    </ChildContent>
+    <Popover>
+        <h1>Add a new house</h1>
+        <p>You can add a new house to your family as long as it is not taken by another family</p>
+        <EditForm Model="ViewModel" OnValidSubmit="CreateHouseAsync" FormName="CreateHouse">
+            <DataAnnotationsValidator />
+            <div class="row">
+                <div class="col-sm-12 col-md-8">
+                    <label class="form-label" for="street">Street</label>
+                    <InputText class="form-control" id="street" @bind-Value="ViewModel!.Street" />
+                    <ValidationMessage For="@(() => ViewModel.Street)"></ValidationMessage>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <label class="form-label" for="number">Number</label>
+                    <InputText class="form-control" id="number" @bind-Value="ViewModel.Number" />
+                    <ValidationMessage For="@(() => ViewModel.Number)"></ValidationMessage>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-12 col-md-6">
+                    <label class="form-label" for="postal-code">PostalCode</label>
+                    <InputText class="form-control" id="postal-code" @bind-Value="ViewModel.PostalCode" />
+                    <ValidationMessage For="@(() => ViewModel.PostalCode)"></ValidationMessage>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <label class="form-label" for="city">City</label>
+                    <InputText class="form-control" id="city" @bind-Value="ViewModel.City" />
+                    <ValidationMessage For="@(() => ViewModel.City)"></ValidationMessage>
+                </div>
+            </div>
+            <button class="btn btn-success mt-3" type="submit">Create</button>
+            <button class="btn btn-danger mt-3" type="button" @onclick="CloseAsync">Cancel</button>
+        </EditForm>
+    </Popover>
+</PopoverCard>
+
+@code {
+
+    PopoverCard? popoverCard;
+    string? popoverCreate = "house-creation-popover";
+
+    [SupplyParameterFromForm]
+    public HouseViewModel? ViewModel { get; set; }
+
+    [Parameter] public string? FamilyId { get; set; }
+    [Parameter] public EventCallback<Data.House> Created { get; set; }
+
+    protected override void OnInitialized()
+    {
+        ViewModel ??= new();
+    }
+
+    private async Task CreateHouseAsync()
+    {
+        var house = await houseService.CreateHouseAsync(FamilyId, ViewModel);
+
+        if (house is not null && Created.HasDelegate)
+        {
+            await CloseAsync();
+            await Created.InvokeAsync(house);
+        }
+    }
+
+    private async Task CloseAsync()
+    {
+        if (popoverCard is not null)
+        {
+            await popoverCard.CloseAsync();
+        }
+    }
+}

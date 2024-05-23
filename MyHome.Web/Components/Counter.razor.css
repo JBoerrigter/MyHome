@@ -1,0 +1,28 @@
+﻿.counter {
+    --bg-color: #FFFFFF;
+    --border-color: #DEDEDE;
+    --text-color: #5C5C5C;
+    --border-radius: 10px;
+    --success-color: #4FAA3B;
+
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    border-radius: var(--border-radius);
+    text-align: center;
+    aspect-ratio: 5/3;
+    width: 8rem;
+}
+
+.counter p {
+    margin: 0;
+}
+
+    .counter .Number {
+        font-size: 2rem;
+        color: var(--success-color);
+    }
+
+    .counter .Label {
+        font-size: 12px;
+        color: var(--text-color);
+    }

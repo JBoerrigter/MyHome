@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/Indexold"
 @model IndexModel
 @using System.Security.Claims
 @{
@@ -11,7 +11,8 @@
     }
 }
 
-@if (Model.Family is null)
+
+@* @if (Model.Family is null)
 {
     <div class="main-container">
         <div class="main-header">
@@ -121,5 +122,66 @@ else
                 </div>
             </section>
         </div>
+    </div>
+} *@
+
+@if (Model.Family is not null)
+{
+    <div class="page">
+
+
+        <header>
+            <h1>@Model.Family.Name</h1>
+        </header>
+        <main>
+            <div class="row">
+                <div class="counter">
+                    <p class="Number">@Model.Family.Houses?.Count</p>
+                    <p class="Label">Houses</p>
+                </div>
+                <div class="counter">
+                    <p class="Number">@Model.Family.Members?.Count</p>
+                    <p class="Label">Members</p>
+                </div>
+            </div>
+            <div class="row">
+                <a href="#" class="actioncard actioncard-new">
+                    <div class="actioncard-image-bg">
+                        <i class='bx bx-plus'></i>
+                    </div>
+                    <div class="actioncard-content">
+                        <h2>Invite</h2>
+                        <p>Invite a user to your family</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="row">
+                <h3 class="section-label">Members</h3>
+                <ul class="list-group col-8">
+                    @foreach (var member in Model.Family.Members)
+                    {
+                        <li class="list-group-item">@member.UserName</li>
+                    }
+                </ul>
+            </div>
+        </main>
+        <aside>
+            <h3 class="section-label mb-3">Quick Access</h3>
+            <div>
+                <a href="/Houses" class="customcard">
+                    <div class="customcard-image-bg">
+                        <i class='bx bxs-home'></i>
+                    </div>
+                    <div class="customcard-content">
+                        <h3>Houses</h3>
+                        <p>Check the houses of your family</p>
+                    </div>
+                    <div class="customcard-actions">
+                        <i class='bx bx-right-arrow-alt'></i>
+                    </div>
+                </a>
+            </div>
+        </aside>
     </div>
 }

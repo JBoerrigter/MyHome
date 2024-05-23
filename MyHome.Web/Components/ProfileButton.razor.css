@@ -1,0 +1,20 @@
+﻿.circle {
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    width: 42px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle p {
+    margin: 0;
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: 1.25rem;
+}
+
+a:hover {
+    text-decoration: none !important;
+}

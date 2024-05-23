@@ -1,0 +1,63 @@
+﻿@rendermode RenderMode.InteractiveServer
+
+<PopoverCard @ref="popoverCard" Target="@popoverCreate" CssClass="card-new">
+    <Image>
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="card-new" viewBox="0 0 16 16">
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+        </svg>
+    </Image>
+    <ChildContent>
+        <h2>Invite</h2>
+        <p class="hint">Invite a user to your family</p>
+    </ChildContent>
+    <Popover>
+        <h1>Expand your family</h1>
+        <p>Enter the E-Mail of someone that should join your family</p>
+        <EditForm Model="ViewModel" FormName="InviteFamily" OnValidSubmit="InviteFamilyAsync">
+            <DataAnnotationsValidator />
+            <div class="row">
+                <div>
+                    <label class="form-label" for="email">E-Mail</label>
+                    <InputText class="form-control" id="email" @bind-Value="ViewModel!.Email" />
+                    <ValidationMessage For="(() => ViewModel.Email)" />
+                </div>
+            </div>
+            <button class="btn btn-success mt-3" type="submit">Invite</button>
+            <button class="btn btn-danger mt-3" type="button" @onclick="CancelAsync">Cancel</button>
+        </EditForm>
+    </Popover>
+</PopoverCard>
+
+@code {
+
+    PopoverCard? popoverCard;
+    string? popoverCreate = "family-invite-popover";
+
+    [SupplyParameterFromForm]
+    public FamilyViewModel? ViewModel { get; set; }
+
+    protected override void OnInitialized()
+    {
+        ViewModel ??= new();
+    }
+
+    private async Task InviteFamilyAsync()
+    {
+        if (popoverCard is not null)
+        {
+            await popoverCard.CloseAsync();
+        }
+
+        ViewModel = new();
+    }
+
+    private async Task CancelAsync()
+    {
+        if (popoverCard is not null)
+        {
+            await popoverCard.CloseAsync();
+        }
+
+        ViewModel = new();
+    }
+}
