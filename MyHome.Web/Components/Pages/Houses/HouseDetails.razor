@@ -36,16 +36,16 @@
         <section>
             <h2>Statistics</h2>
             <div class="row">
-                <div class="chart col-sm-12 col-lg-6">
-                    <div class="card p-4">
-                        <p>charts... comming soon</p>
+                @foreach (var readingType in _house.MeterReadings.Select(r => r.ReadingType).Distinct())
+                {
+                    <div class="chart col-sm-12 col-lg-6">
+                        <div class="card">
+                            <div class="card-body chart">
+                                <canvas id="@($"chart-{readingType.Name}")"></canvas>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="chart col-sm-12 col-lg-6">
-                    <div class="card p-4">
-                        <p>charts... comming soon</p>
-                    </div>
-                </div>
+                }
             </div>
         </section>
 
@@ -54,7 +54,8 @@
             <div class="horizontal-list">
                 <AuthorizeView>
                     <Authorized>
-                        <MyHome.Web.Components.Pages.MeterReading.Create UserId="@context.User.GetId()" HouseId="@_house.Id" Created="MeterReadingCreated" />
+                        <MyHome.Web.Components.Pages.MeterReading.Create UserId="@context.User.GetId()"
+                            HouseId="@_house.Id" Created="MeterReadingCreated" />
                     </Authorized>
                 </AuthorizeView>
 
@@ -62,10 +63,12 @@
                 {
                     <ActionCard Href="@($"/houses/{reading.HouseId}/meter-readings/{reading.Id}")">
                         <Image>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="680.764" height="528.354" viewBox="0 0 180.119 139.794">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="680.764" height="528.354"
+                                viewBox="0 0 180.119 139.794">
                                 <g transform="translate(-13.59 -66.639)" paint-order="fill markers stroke">
                                     <path fill="#d0d0d0" d="M13.591 66.639H193.71v139.794H13.591z" />
-                                    <path d="m118.507 133.514-34.249 34.249-15.968-15.968-41.938 41.937H178.726z" opacity=".675" fill="#fff" />
+                                    <path d="m118.507 133.514-34.249 34.249-15.968-15.968-41.938 41.937H178.726z"
+                                        opacity=".675" fill="#fff" />
                                     <circle cx="58.217" cy="108.555" r="11.773" opacity=".675" fill="#fff" />
                                     <path fill="none" d="M26.111 77.634h152.614v116.099H26.111z" />
                                 </g>

@@ -353,3 +353,5 @@ MigrationBackup/
 /MyHome.Web/Data/*.db
 /MyHome.Web/Data/*.db-shm
 /MyHome.Web/Data/*.db-wal
+MyHome.Web/wwwroot/js/main.bundle.js.LICENSE.txt
+MyHome.Web/wwwroot/js/main.bundle.js

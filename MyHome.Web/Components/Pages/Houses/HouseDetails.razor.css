@@ -16,3 +16,8 @@ h2 {
 p {
     margin: 0;
 }
+
+.chart{
+    max-width: 500px;
+    
+}

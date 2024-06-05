@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MyHome.Web.Data;
 using MyHome.Web.Services;
 
 namespace MyHome.Web.Components.Pages.Houses
@@ -25,6 +26,26 @@ namespace MyHome.Web.Components.Pages.Houses
             _family = await FamilyService.GetFamily(_house.FamilyId);
         }
 
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                foreach (var readingType in _house.MeterReadings.Select(r => r.ReadingType).Distinct())
+                {
+                    RenderChart(readingType);
+                }
+            }
+            await base.OnAfterRenderAsync(firstRender);
+        }
+
+        private async Task RenderChart(MeterReadingType readingType)
+        {
+            var data = _house.MeterReadings
+                        .Where(r => r.ReadingType.Equals(readingType))
+                        .Select(r => new { Year = r.Year, Value = r.Value });
+            await JsRuntime.InvokeVoidAsync("ShowChart", $"chart-{readingType.Name}", "line", data, readingType.Name);
+        }
+
         private async Task DeleteAsync()
         {
             await HouseService.DeleteAsync(_house.Id);
@@ -42,6 +63,7 @@ namespace MyHome.Web.Components.Pages.Houses
             if (model is not null)
             {
                 _house.MeterReadings.Add(model);
+                _ = RenderChart(model.ReadingType);
             }
         }
     }
